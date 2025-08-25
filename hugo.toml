@@ -1,1 +1,15 @@
-theme = "paper"
+baseURL   = "https://reversemagnus.com/"   # <-- set your real domain
+title     = "Shivam Gupta"
+theme     = "paper"
+copyright = "© Shivam Gupta"
+
+[params]
+  # pick a color you like: "auto" | "linen" | "wheat" | "plum" | "gray" | "dark"
+  color   = "auto"
+
+  # social icons in the top-right (Paper reads these)
+  github  = "revmag"
+  twitter = "reversemagnus"
+
+  # optional avatar (see step 2)
+  avatar  = "images/vault.png"

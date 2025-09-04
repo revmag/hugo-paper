@@ -1,0 +1,24 @@
+{{ define "main" }}
+<article>
+  <h1>Projects</h1>
+  {{ range .Pages.ByWeight }}
+    <section class="project-item" style="margin:1.5rem 0; padding:0.75rem 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+      <h2 style="margin:0 0 0.25rem 0;">{{ .Title }}</h2>
+      {{ with .Params.summary }}
+        <p style="margin:0.25rem 0 0.5rem 0;">{{ . }}</p>
+      {{ end }}
+      {{ with .Params.repo }}
+        <p style="margin:0.5rem 0 0 0;">
+          <a class="link" href="{{ . }}" target="_blank" rel="noopener">View link</a>
+        </p>
+      {{ else }}
+        {{ with .Params.link }}
+          <p style="margin:0.5rem 0 0 0;">
+            <a class="link" href="{{ . }}" target="_blank" rel="noopener">View link</a>
+          </p>
+        {{ end }}
+      {{ end }}
+    </section>
+  {{ end }}
+</article>
+{{ end }}

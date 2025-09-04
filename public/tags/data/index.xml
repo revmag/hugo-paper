@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data on Shivam Gupta</title>
+    <link>http://localhost:1313/tags/data/</link>
+    <description>Recent content in Data on Shivam Gupta</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <copyright>© Shivam Gupta</copyright>
+    <atom:link href="http://localhost:1313/tags/data/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>NMT Transformers from scratch</title>
+      <link>http://localhost:1313/projects/a--transformers/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/a--transformers/</guid>
+      <description>Built an encoder decoder tranformers for English to French experimenting with different attention heads</description>
+    </item>
+    <item>
+      <title>Grapes Farm data using S1 &amp; S2 satellite sensors</title>
+      <link>http://localhost:1313/projects/b--farm-data/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/b--farm-data/</guid>
+      <description>&lt;p&gt;Analyzed grape farms using spectral angle mapping: first segmenting fields with SAM (Segment Anything), then computing the spectral angle of each pixel against known grape reference points to classify whether an area was a grape farm or not.&lt;/p&gt;&#xA;&lt;p&gt;Beyond the technical work, I traveled across Mumbai, Bengaluru, and Pune to study how horticulture crop trading actually happens on the ground—demoing the solution to farmers and traders, and learning firsthand about the challenges of agricultural markets.&lt;/p&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Daily articles (about 150)</title>
+      <link>http://localhost:1313/projects/articles/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/articles/</guid>
+      <description>Curated and shared the best essays from Pmarca, Paul Graham, Ben Kuhn, Sam Altman, and selected books - delivered weekly over Notion to ~20 friends for 5 months. The experiment tested a hypothesis: that consistently pushing high-quality ideas straight to WhatsApp could shift how people think and reason.</description>
+    </item>
+    <item>
+      <title>Mechanistic Interpretability</title>
+      <link>http://localhost:1313/projects/c--mech-interp/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/c--mech-interp/</guid>
+      <description>Studied residual stream activations across layers and explored emergence of dominant directions using refusal features&#xA;in Gemma-2B and Meta LLaMa-7B Model, using both base and instruction fine tuned models</description>
+    </item>
+    <item>
+      <title>Decentralized Stablecoins</title>
+      <link>http://localhost:1313/projects/d---decentralized-stablecoin/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/d---decentralized-stablecoin/</guid>
+      <description>Borrowers lock up collateral to mint stablecoins, while savers earn interest on their deposits. Adjustable knobs : borrower APR and saver rate ,dynamically balance supply and demand: higher saver rates attract deposits, while lower borrowing rates boost lending. If collateral value falls too far, liquidation kicks in to protect the system.</description>
+    </item>
+    <item>
+      <title>Over-Collaterized lending dApp</title>
+      <link>http://localhost:1313/projects/over-collaterized-lending-site/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/over-collaterized-lending-site/</guid>
+      <description>Over-collateralized lending dApp with two tokens: CORN (collateral) and ETH (borrowable).&#xA;Users deposit CORN as collateral and can borrow ETH against it, but only within a safe limit. If their collateral ratio drops below 110%, the position is flagged for liquidation : protecting the system while keeping lending secure.</description>
+    </item>
+    <item>
+      <title>Prediction Market on Ethereum( Sepolia)</title>
+      <link>http://localhost:1313/projects/prediction-market/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/prediction-market/</guid>
+      <description>&lt;p&gt;Prediction market on Ethereum where people can trade simple Yes/No shares. Prices move with demand, effectively reflecting the crowd’s probability of an outcome, and when the result is known, winners get paid.&lt;/p&gt;&#xA;&lt;p&gt;The core engine runs on an AMM for instant trading, liquidity providers earn a share of fees, and an oracle is used to settle the final result.&lt;/p&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Variational Learning for Hyperelastic Modelilng</title>
+      <link>http://localhost:1313/projects/variational-learning/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/variational-learning/</guid>
+      <description>Implemented Bayesian Variational Learning algorithm with sparsity-promoting spike-slab priors (to reduce computation)&#xA;to obtain the best-fitting hyper elasticity model from force &amp;amp; displacement data (generatedartificially) using Gibbs Sampling</description>
+    </item>
+    <item>
+      <title>Video-Vision Tranformers</title>
+      <link>http://localhost:1313/projects/video-vision-transformers/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/video-vision-transformers/</guid>
+      <description>Implemented Pytorch version of ViVIT to classify MedMNIST dataset, sampling 3D frames using Tubelet Embedding&#xA;Sampling method, dissecting video into spatial and temporal tokens, and inputting this as embedding to Transformer</description>
+    </item>
+  </channel>
+</rss>

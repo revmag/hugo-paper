@@ -1,0 +1,305 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:"
+  lang="en"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Projects - Shivam Gupta</title>
+
+  
+  <meta name="theme-color" />
+
+  
+  <meta
+    name="description"
+    content="A personal blog"
+  />
+  <meta name="author" content="Shivam Gupta" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.css" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.png" />
+
+  <link rel="preload" as="image" href="https://www.gravatar.com/avatar/a81bbaf54d8b4232f35a22cad694eaa6?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/twitter.svg" /><link rel="preload" as="image" href="http://localhost:1313/github.svg" />
+
+  
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.148.2">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Shivam Gupta</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.png)_left_center/_auto_theme('spacing.6')_no-repeat] [transition:_background-position_0.4s_steps(5)] dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = ''.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="lg:ml-12 lg:flex lg:flex-row lg:items-center lg:space-x-10 rtl:space-x-reverse"
+    ><a
+        class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal"
+        href="/projects/"
+        >Projects</a
+      ><a
+        class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal"
+        href="/posts/"
+        >Blog</a
+      ><a
+        class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal"
+        href="/misc/"
+        >Misc</a
+      ></nav><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./twitter.svg)"
+        href="https://twitter.com/https://twitter.com/reversemagnus"
+        target="_blank"
+        rel="me"
+      >twitter</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/https://github.com/revmag"
+        target="_blank"
+        rel="me"
+      >github</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    >
+<article>
+  <h1>Projects</h1>
+  
+    <section class="project-item" style="margin:1.5rem 0; padding:0.75rem 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+      <h2 style="margin:0 0 0.25rem 0;">NMT Transformers from scratch</h2>
+      
+        <p style="margin:0.25rem 0 0.5rem 0;">Built an encoder decoder tranformers for English to French experimenting with different attention heads
+
+</p>
+      
+      
+        <p style="margin:0.5rem 0 0 0;">
+          <a class="link" href="https://stablecoins-3ub3mwdl8-shivams-projects-dbcd6bd7.vercel.app/" target="_blank" rel="noopener">View link</a>
+        </p>
+      
+    </section>
+  
+    <section class="project-item" style="margin:1.5rem 0; padding:0.75rem 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+      <h2 style="margin:0 0 0.25rem 0;">Grapes Farm data using S1 &amp; S2 satellite sensors</h2>
+      
+        <p style="margin:0.25rem 0 0.5rem 0;">Analyzed grape farms using spectral angle mapping: first segmenting fields with SAM (Segment Anything), then computing the spectral angle of each pixel against known grape reference points to classify whether an area was a grape farm or not.  
+
+
+Beyond the technical work, I traveled across Mumbai, Bengaluru, and Pune to study how horticulture crop trading actually happens on the ground—demoing the solution to farmers and traders, and learning firsthand about the challenges of agricultural markets.
+</p>
+      
+      
+        <p style="margin:0.5rem 0 0 0;">
+          <a class="link" href="https://drive.google.com/file/d/1fJOsD8nnJ1S_TfGPemBPAUV_g-LFplXl/view" target="_blank" rel="noopener">View link</a>
+        </p>
+      
+    </section>
+  
+    <section class="project-item" style="margin:1.5rem 0; padding:0.75rem 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+      <h2 style="margin:0 0 0.25rem 0;">Daily articles (about 150)</h2>
+      
+        <p style="margin:0.25rem 0 0.5rem 0;">Curated and shared the best essays from Pmarca, Paul Graham, Ben Kuhn, Sam Altman, and selected books - delivered weekly over Notion to ~20 friends for 5 months. The experiment tested a hypothesis: that consistently pushing high-quality ideas straight to WhatsApp could shift how people think and reason.</p>
+      
+      
+        <p style="margin:0.5rem 0 0 0;">
+          <a class="link" href="https://excellent-halloumi-e85.notion.site/Articles-d279f8367f204820b78e420d69baa99c?source=copy_link" target="_blank" rel="noopener">View link</a>
+        </p>
+      
+    </section>
+  
+    <section class="project-item" style="margin:1.5rem 0; padding:0.75rem 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+      <h2 style="margin:0 0 0.25rem 0;">Mechanistic Interpretability</h2>
+      
+        <p style="margin:0.25rem 0 0.5rem 0;">Studied residual stream activations across layers and explored emergence of dominant directions using refusal features
+in Gemma-2B and Meta LLaMa-7B Model, using both base and instruction fine tuned models
+</p>
+      
+      
+        <p style="margin:0.5rem 0 0 0;">
+          <a class="link" href="https://github.com/revmag/refusal_direction_for_cosine" target="_blank" rel="noopener">View link</a>
+        </p>
+      
+    </section>
+  
+    <section class="project-item" style="margin:1.5rem 0; padding:0.75rem 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+      <h2 style="margin:0 0 0.25rem 0;">Decentralized Stablecoins</h2>
+      
+        <p style="margin:0.25rem 0 0.5rem 0;">Borrowers lock up collateral to mint stablecoins, while savers earn interest on their deposits. Adjustable knobs : borrower APR and saver rate ,dynamically balance supply and demand: higher saver rates attract deposits, while lower borrowing rates boost lending. If collateral value falls too far, liquidation kicks in to protect the system.
+</p>
+      
+      
+        <p style="margin:0.5rem 0 0 0;">
+          <a class="link" href="https://github.com/revmag/Transformers-from-scratch/tree/main" target="_blank" rel="noopener">View link</a>
+        </p>
+      
+    </section>
+  
+    <section class="project-item" style="margin:1.5rem 0; padding:0.75rem 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+      <h2 style="margin:0 0 0.25rem 0;">Over-Collaterized lending dApp</h2>
+      
+        <p style="margin:0.25rem 0 0.5rem 0;">Over-collateralized lending dApp with two tokens: CORN (collateral) and ETH (borrowable).
+Users deposit CORN as collateral and can borrow ETH against it, but only within a safe limit. If their collateral ratio drops below 110%, the position is flagged for liquidation : protecting the system while keeping lending secure.</p>
+      
+      
+        <p style="margin:0.5rem 0 0 0;">
+          <a class="link" href="https://newproj-1lwbe25sk-shivams-projects-dbcd6bd7.vercel.app/" target="_blank" rel="noopener">View link</a>
+        </p>
+      
+    </section>
+  
+    <section class="project-item" style="margin:1.5rem 0; padding:0.75rem 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+      <h2 style="margin:0 0 0.25rem 0;">Prediction Market on Ethereum( Sepolia)</h2>
+      
+        <p style="margin:0.25rem 0 0.5rem 0;">Prediction market on Ethereum where people can trade simple Yes/No shares. Prices move with demand, effectively reflecting the crowd’s probability of an outcome, and when the result is known, winners get paid.
+
+The core engine runs on an AMM for instant trading, liquidity providers earn a share of fees, and an oracle is used to settle the final result.</p>
+      
+      
+        <p style="margin:0.5rem 0 0 0;">
+          <a class="link" href="https://predictionmarket-2tl4z74jf-shivams-projects-dbcd6bd7.vercel.app/" target="_blank" rel="noopener">View link</a>
+        </p>
+      
+    </section>
+  
+    <section class="project-item" style="margin:1.5rem 0; padding:0.75rem 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+      <h2 style="margin:0 0 0.25rem 0;">Variational Learning for Hyperelastic Modelilng</h2>
+      
+        <p style="margin:0.25rem 0 0.5rem 0;">Implemented Bayesian Variational Learning algorithm with sparsity-promoting spike-slab priors (to reduce computation)
+to obtain the best-fitting hyper elasticity model from force &amp; displacement data (generatedartificially) using Gibbs Sampling
+</p>
+      
+      
+        <p style="margin:0.5rem 0 0 0;">
+          <a class="link" href="https://github.com/revmag/Hierarcial_Bayesian_Hyperelastic" target="_blank" rel="noopener">View link</a>
+        </p>
+      
+    </section>
+  
+    <section class="project-item" style="margin:1.5rem 0; padding:0.75rem 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+      <h2 style="margin:0 0 0.25rem 0;">Video-Vision Tranformers</h2>
+      
+        <p style="margin:0.25rem 0 0.5rem 0;">Implemented Pytorch version of ViVIT to classify MedMNIST dataset, sampling 3D frames using Tubelet Embedding
+Sampling method, dissecting video into spatial and temporal tokens, and inputting this as embedding to Transformer</p>
+      
+      
+        <p style="margin:0.5rem 0 0 0;">
+          <a class="link" href="https://github.com/revmag/ViVit_pytorch" target="_blank" rel="noopener">View link</a>
+        </p>
+      
+    </section>
+  
+</article>
+</main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">© Shivam Gupta</div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

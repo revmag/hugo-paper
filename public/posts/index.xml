@@ -9,11 +9,60 @@
     <copyright>© Shivam Gupta</copyright>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Shivam Gupta</title>
-      <link>http://localhost:1313/posts/my-first-post/</link>
+      <title>State of Mechanistic Interpretability</title>
+      <link>http://localhost:1313/posts/stateofinterpretability/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/my-first-post/</guid>
-      <description>&lt;p&gt;Hello! My name is Shivam Gupta, and I love to read books! I am interested in AI, rockets, travel, learning about the world and many things :p.&lt;/p&gt;&#xA;&lt;p&gt;The woods are lovely, dark and deep.&lt;br&gt;&#xA;But I have promises to keep,&lt;br&gt;&#xA;And miles to go before I sleep,&lt;br&gt;&#xA;And miles to go before I sleep.&lt;/p&gt;</description>
+      <guid>http://localhost:1313/posts/stateofinterpretability/</guid>
+      <description>&lt;p&gt;So I deep dived into what is going in the field of mechanistic interpretability( it seems really cool, to be able to know how attention is calculating all these amazing similarities from so far, and how it is able to make so much sense).&lt;/p&gt;&#xA;&lt;p&gt;What I think is happening -&#xA;It seems to me, LLMs mimic a lazy person, who is very good at pattern patching, so it learns rules/pattern of some kind implicitly, and its not entirely perfect knowledge like code, but it wants to converge to that. I got this idea by looking at the chess paper, where they analyzed how it predicts the next move of chess game, without being fed the rules explicitly, or what each piece does, but after training for several games, it was able to predict the next move, and also tell some of the rules, Some for calculation, there is this paper, which analyzed how LLMs are able to do 5-6 digit addition, it was amazing, it tried to show they are learning the rules of addition somehow( like addition at ones place, and then carry on if sum exceeds 10), by differentiating the dataset into different catagories (like whether carry sum is needed or not).&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Sparse AutoEncoders(SAEs) and compression</title>
+      <link>http://localhost:1313/posts/saes/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/saes/</guid>
+      <description>&lt;p&gt;To find important features in A*x=b&#xA;There is another method than directly using Lasso regularization to solve this equation.&lt;/p&gt;&#xA;&lt;p&gt;That’s where SAEs come in, Sparse AutoEncoders.&#xA;This is specifically for LLMs.&lt;br&gt;&#xA;So hop on.&lt;/p&gt;&#xA;&lt;p&gt;Lets say I have 4 words in my input, so total size of input is 4* d_model ( lets say 512 in this case).&#xA;And thats lets assume for gemma-2b, so 18 layers in total. ( so 4&lt;em&gt;512&lt;/em&gt;18 total numbers).&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>SMs, Cores, Threads, Blocks, SMA, coalesced memory </title>
+      <link>http://localhost:1313/posts/gpu_stuff/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/gpu_stuff/</guid>
+      <description>&lt;p&gt;When we use GPUs, and code it in CUDA - there are some things which we notice : threads and blocks, and how exactly are the functions running, like all the threads and all the blocks are running simultaneously or consecutively?&lt;/p&gt;&#xA;&lt;p&gt;Start with SMs, and cores.&#xA;So Streaming Multiprocessor ( SM) - aka compute units - SIMD units. SM is like core of multi core CPU, it is a hardware building block&#xA;And Each SM contains a bunch of cores, each core&#xA;( Like Kepler has 192 cores, Maxwell, Pascal, Ampere, Ada has 128 cores, and Turing, A100,A30 has 62 cores)&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>ELBO losses and Posterior Approximation</title>
+      <link>http://localhost:1313/posts/elbolosses/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/elbolosses/</guid>
+      <description>&lt;p&gt;The ultimate goal is to maximize the evidence( or the log of the likelihood)&#xA;which is similar as minimizing the negative log likelihood, and hence we compute gradients of the loss( which is negative log likelihood), to move in a direction where loss gets reduced).&#xA;Loss is not a fixed quantity, loss depends on parameters, and hence we can tune the parameters, so that we can get a reduced loss.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>How transformers work, Encoder Decoder difference, How Inputs gets passed</title>
+      <link>http://localhost:1313/posts/tranformers/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/tranformers/</guid>
+      <description>&lt;p&gt;I was confused for a very long time what the actual difference between encoders and decoders are, and how inputs gets processed by each layer( yes, I know the usuals like decoder only has casual mask, and it can’t look ahead, these all sound nice, but I want to know what exactly is happening over there)&lt;/p&gt;&#xA;&lt;p&gt;So, a tldr:&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;Encoders take embedding of each word, and does some processing on each word and passes it.&#xA;Ex - A 4 sentence word, so 4  - 512 dimensional embedding, after many layers of encoders, we see 4  - 512 dimensional embedding only.&lt;/li&gt;&#xA;&lt;li&gt;Decoder can do 2 things, depending on whether gold output is available or not( inference time vs training time)&#xA;If gold output is available( during training time) - it will similarly take take 4 - 512 dimensional embedding, and after various layers, calculate a final 4 - 512 dimensional vectors. The interesting thing is in decoder, attention is calculated twice, once between the gold output upto that index, and then between the query of the current index, and the keys and value of the final output of the encoder. We can do it all at once by using causal masking.&#xA;If gold output is not available ( during inference time) - it will take only 1 - 512 dimensional vector and further refine it to arrive at one final 512 dimensional vector( it will calculate attention upto the outputs produced upto that index, and then again calculate attention with it being the query matrix, and the keys and value matrix coming from the final encoder layer)&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;So, difference is mainly how many vectors get passed at each layer, and how many times attention is being calculated.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Understanding ViViT and how Videos are being encoded</title>
+      <link>http://localhost:1313/posts/vivit/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/vivit/</guid>
+      <description>&lt;p&gt;We have a bunch of videos, so how do we encode it and pass it through a transformer for classification task.&lt;/p&gt;&#xA;&lt;p&gt;Here’s how:&#xA;Lets say Input video is black and white( so input channels are 1),&#xA;and each frame is 28*28, and there are 28 frames in total( in simple terms, we have each video which is ~3 seconds long)&lt;/p&gt;&#xA;&lt;p&gt;So, here’s how we convert these videos to a sequence to sequence layer( akin to how ViViT works):&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Async Functions</title>
+      <link>http://localhost:1313/posts/asyncfunctions/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/asyncfunctions/</guid>
+      <description>&lt;p&gt;So I had to calls a server over a lakh times to get some output.&lt;br&gt;&#xA;Then had to resort to async functions ( as I already has the list which I need to pass as input)&lt;/p&gt;&#xA;&lt;p&gt;But some observations about how it works →&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;async&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;func&lt;/span&gt;()&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}  &#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;async&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;():&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tasks &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [asyncio&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_task(func(i)) &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;)]&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; asyncio&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;gather(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;tasks)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;asyncio&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;run(main())&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;So what happens is → tasks makes list of all the numbers which need to be executed&#xA;and when asyncio.gather(*tasks) is called, it executes all of them in parallel.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Stock Market Prediction with RNN</title>
+      <link>http://localhost:1313/posts/stocks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/stocks/</guid>
+      <description>&lt;p&gt;In trying to predict the closing price of a stock, if we have opening, high, and closing price for several days, I encountered a few questions.&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;How should my input be, and what should my output be?&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;—&amp;gt;  I knew all the backprop steps in calculating RNN, but I was not able to figure out, what it means to apply sequence to sequence modeling here, how many days should determine the output of the next days( like should a sequence of 7 days determine the output of the 8th day, or lesser or more, or should only 1 day determine the output of next day, and i should calculate my output prediction of all the days, and how should my hidden layer be, do i calculate output at every day, and Hoping to pass hidden state value at every step)&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

@@ -8,8 +8,29 @@ copyright = "© Shivam Gupta"
   color   = "auto"
 
   # social icons in the top-right (Paper reads these)
-  github  = "revmag"
-  twitter = "reversemagnus"
+  github  = "https://github.com/revmag"
+  twitter = "https://twitter.com/reversemagnus"
 
   # optional avatar (see step 2)
   avatar  = "images/vault.png"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[menu]
+  [[menu.main]]
+    name = "Projects"
+    url = "/projects/"
+    weight = 10
+
+  [[menu.main]]
+    name = "Blog"
+    url = "/posts/"
+    weight = 20
+
+  [[menu.main]]
+    name = "Misc"
+    url = "/misc/"
+    weight = 30

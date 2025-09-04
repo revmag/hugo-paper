@@ -1,0 +1,217 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:"
+  lang="en"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>SMs, Cores, Threads, Blocks, SMA, coalesced memory  - Shivam Gupta</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="When we use GPUs, and code it in CUDA - there are some things which we notice : threads and blocks, and how exactly are the functions running, like all the threads and all the blocks are running simultaneously or consecutively?
+Start with SMs, and cores.
+So Streaming Multiprocessor ( SM) - aka compute units - SIMD units. SM is like core of multi core CPU, it is a hardware building block
+And Each SM contains a bunch of cores, each core
+( Like Kepler has 192 cores, Maxwell, Pascal, Ampere, Ada has 128 cores, and Turing, A100,A30 has 62 cores)" />
+  <meta name="author" content="Shivam Gupta" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.css" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.png" />
+
+  <link rel="preload" as="image" href="https://www.gravatar.com/avatar/a81bbaf54d8b4232f35a22cad694eaa6?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/twitter.svg" /><link rel="preload" as="image" href="http://localhost:1313/github.svg" />
+
+  <script
+    defer
+    src="http://localhost:1313/highlight.min.js"
+    onload="hljs.initHighlightingOnLoad();"
+  ></script>
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.148.2">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Shivam Gupta</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.png)_left_center/_auto_theme('spacing.6')_no-repeat] [transition:_background-position_0.4s_steps(5)] dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = ''.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="lg:ml-12 lg:flex lg:flex-row lg:items-center lg:space-x-10 rtl:space-x-reverse"
+    ><a
+        class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal"
+        href="/projects/"
+        >Projects</a
+      ><a
+        class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal"
+        href="/posts/"
+        >Blog</a
+      ><a
+        class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal"
+        href="/misc/"
+        >Misc</a
+      ></nav><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./twitter.svg)"
+        href="https://twitter.com/https://twitter.com/reversemagnus"
+        target="_blank"
+        rel="me"
+      >twitter</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/https://github.com/revmag"
+        target="_blank"
+        rel="me"
+      >github</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">SMs, Cores, Threads, Blocks, SMA, coalesced memory </h1><div class="text-xs antialiased opacity-60"></div></header>
+
+  <section><p>When we use GPUs, and code it in CUDA - there are some things which we notice : threads and blocks, and how exactly are the functions running, like all the threads and all the blocks are running simultaneously or consecutively?</p>
+<p>Start with SMs, and cores.
+So Streaming Multiprocessor ( SM) - aka compute units - SIMD units. SM is like core of multi core CPU, it is a hardware building block
+And Each SM contains a bunch of cores, each core
+( Like Kepler has 192 cores, Maxwell, Pascal, Ampere, Ada has 128 cores, and Turing, A100,A30 has 62 cores)</p>
+<p>These cores are wrapped in bunches of 32, called warps, and example Kepler can dispatch 6 of these warps at once.( in parallel).
+And all threads in one warp execute the same SIMD instructions, and run parallely.
+And a single thread is executed on 1 CUDA core.</p>
+<p>So each SM run in parallel, the execution order is random, and all the cores inside a SM, also run in parallel, at times using the same memory, the Shared Memory Access, near the L1 cache( each core does 1 thread at a time).</p>
+<p>And let’s say, each thread makes 3 accesses, but they will happen in order, and for all the threads in a wrap, they will happen at the same time.</p>
+<p>If my matrix is laid out like this →</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-css" data-lang="css"><span style="display:flex;"><span><span style="color:#f92672">0</span> <span style="color:#f92672">1</span> <span style="color:#f92672">2</span> <span style="color:#f92672">3</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">4</span> <span style="color:#f92672">5</span> <span style="color:#f92672">6</span> <span style="color:#f92672">7</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">8</span> <span style="color:#f92672">9</span> <span style="color:#f92672">a</span> <span style="color:#f92672">b</span>
+</span></span></code></pre></div><p>And we want to choose which configuration is better :
+Config 1 :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">thread</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">:</span>  <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">thread</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>  <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">thread</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">:</span>  <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">thread</span> <span style="color:#ae81ff">3</span><span style="color:#f92672">:</span>  <span style="color:#ae81ff">9</span>, a, b
+</span></span></code></pre></div><p>Config 2 :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">thread</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">:</span>  <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">thread</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>  <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">9</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">thread</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">:</span>  <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">6</span>, a
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">thread</span> <span style="color:#ae81ff">3</span><span style="color:#f92672">:</span>  <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">7</span>, b
+</span></span></code></pre></div><p>So config 2 is better, as all 4 threads will go at the same time, and memory address of 0,1,2,3 are consecutive, so it would be easier to fetch, and this is called memory coalescing.
+”A coalesced memory transaction is one in which all of the threads in a half-warp access global memory at the same time. This is oversimple, but the correct way to do it is just have consecutive threads access consecutive memory addresses.”</p>
+<p><a href="https://www.reddit.com/r/CUDA/comments/x2f767/how_does_cuda_blockswarps_thread_works/">https://www.reddit.com/r/CUDA/comments/x2f767/how_does_cuda_blockswarps_thread_works/</a></p>
+<p><a href="https://www.reddit.com/r/nvidia/comments/1celgf6/how_are_1024_threads_executed_in_a_thread_block/?rdt=54705">https://www.reddit.com/r/nvidia/comments/1celgf6/how_are_1024_threads_executed_in_a_thread_block/?rdt=54705</a></p>
+<p><a href="https://stackoverflow.com/questions/5041328/in-cuda-what-is-memory-coalescing-and-how-is-it-achieved">https://stackoverflow.com/questions/5041328/in-cuda-what-is-memory-coalescing-and-how-is-it-achieved</a></p>
+</section>
+
+  </article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">© Shivam Gupta</div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

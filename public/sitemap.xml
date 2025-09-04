@@ -2,13 +2,65 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>http://localhost:1313/projects/a--transformers/</loc>
   </url><url>
-    <loc>http://localhost:1313/posts/</loc>
+    <loc>http://localhost:1313/misc/notesonreading/</loc>
+  </url><url>
+    <loc>http://localhost:1313/posts/stateofinterpretability/</loc>
+  </url><url>
+    <loc>http://localhost:1313/projects/b--farm-data/</loc>
+  </url><url>
+    <loc>http://localhost:1313/posts/saes/</loc>
+  </url><url>
+    <loc>http://localhost:1313/misc/travel/</loc>
+  </url><url>
+    <loc>http://localhost:1313/projects/articles/</loc>
+  </url><url>
+    <loc>http://localhost:1313/misc/convs/</loc>
+  </url><url>
+    <loc>http://localhost:1313/posts/gpu_stuff/</loc>
+  </url><url>
+    <loc>http://localhost:1313/posts/elbolosses/</loc>
+  </url><url>
+    <loc>http://localhost:1313/projects/c--mech-interp/</loc>
+  </url><url>
+    <loc>http://localhost:1313/misc/movies/</loc>
+  </url><url>
+    <loc>http://localhost:1313/misc/books/</loc>
+  </url><url>
+    <loc>http://localhost:1313/projects/d---decentralized-stablecoin/</loc>
+  </url><url>
+    <loc>http://localhost:1313/posts/tranformers/</loc>
+  </url><url>
+    <loc>http://localhost:1313/projects/over-collaterized-lending-site/</loc>
+  </url><url>
+    <loc>http://localhost:1313/posts/vivit/</loc>
+  </url><url>
+    <loc>http://localhost:1313/posts/asyncfunctions/</loc>
+  </url><url>
+    <loc>http://localhost:1313/projects/prediction-market/</loc>
+  </url><url>
+    <loc>http://localhost:1313/posts/stocks/</loc>
+  </url><url>
+    <loc>http://localhost:1313/projects/variational-learning/</loc>
+  </url><url>
+    <loc>http://localhost:1313/projects/video-vision-transformers/</loc>
   </url><url>
     <loc>http://localhost:1313/</loc>
   </url><url>
-    <loc>http://localhost:1313/posts/my-first-post/</loc>
+    <loc>http://localhost:1313/tags/agri/</loc>
+  </url><url>
+    <loc>http://localhost:1313/categories/</loc>
+  </url><url>
+    <loc>http://localhost:1313/tags/data/</loc>
+  </url><url>
+    <loc>http://localhost:1313/misc/</loc>
+  </url><url>
+    <loc>http://localhost:1313/tags/pipeline/</loc>
+  </url><url>
+    <loc>http://localhost:1313/posts/</loc>
+  </url><url>
+    <loc>http://localhost:1313/projects/</loc>
   </url><url>
     <loc>http://localhost:1313/tags/</loc>
   </url>

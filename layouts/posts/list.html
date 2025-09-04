@@ -1,0 +1,16 @@
+{{ define "main" }}
+<article>
+  <h1 class="my-0">{{ .Title }}</h1>
+
+  {{/* Order strictly by Weight */}}
+  {{ $ordered := .Pages.ByWeight }}
+
+  <section aria-label="Blog posts list" style="margin-top:.5rem;">
+    {{ range $ordered }}
+      <div style="margin:.25rem 0; padding:.1rem 0;">
+        <a class="link" href="{{ .Permalink }}">{{ .Title }}</a>
+      </div>
+    {{ end }}
+  </section>
+</article>
+{{ end }}

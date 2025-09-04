@@ -1,0 +1,236 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:"
+  lang="en"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Sparse AutoEncoders(SAEs) and compression - Shivam Gupta</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="To find important features in A*x=b
+There is another method than directly using Lasso regularization to solve this equation.
+That’s where SAEs come in, Sparse AutoEncoders.
+This is specifically for LLMs.
+So hop on.
+Lets say I have 4 words in my input, so total size of input is 4* d_model ( lets say 512 in this case).
+And thats lets assume for gemma-2b, so 18 layers in total. ( so 451218 total numbers)." />
+  <meta name="author" content="Shivam Gupta" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.css" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.png" />
+
+  <link rel="preload" as="image" href="https://www.gravatar.com/avatar/a81bbaf54d8b4232f35a22cad694eaa6?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/twitter.svg" /><link rel="preload" as="image" href="http://localhost:1313/github.svg" />
+
+  <script
+    defer
+    src="http://localhost:1313/highlight.min.js"
+    onload="hljs.initHighlightingOnLoad();"
+  ></script>
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.148.2">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Shivam Gupta</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.png)_left_center/_auto_theme('spacing.6')_no-repeat] [transition:_background-position_0.4s_steps(5)] dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = ''.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="lg:ml-12 lg:flex lg:flex-row lg:items-center lg:space-x-10 rtl:space-x-reverse"
+    ><a
+        class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal"
+        href="/projects/"
+        >Projects</a
+      ><a
+        class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal"
+        href="/posts/"
+        >Blog</a
+      ><a
+        class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal"
+        href="/misc/"
+        >Misc</a
+      ></nav><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./twitter.svg)"
+        href="https://twitter.com/https://twitter.com/reversemagnus"
+        target="_blank"
+        rel="me"
+      >twitter</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/https://github.com/revmag"
+        target="_blank"
+        rel="me"
+      >github</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">Sparse AutoEncoders(SAEs) and compression</h1><div class="text-xs antialiased opacity-60"></div></header>
+
+  <section><p>To find important features in A*x=b
+There is another method than directly using Lasso regularization to solve this equation.</p>
+<p>That’s where SAEs come in, Sparse AutoEncoders.
+This is specifically for LLMs.<br>
+So hop on.</p>
+<p>Lets say I have 4 words in my input, so total size of input is 4* d_model ( lets say 512 in this case).
+And thats lets assume for gemma-2b, so 18 layers in total. ( so 4<em>512</em>18 total numbers).</p>
+<p>We pick a specific layers, and then we project that layers to a higher dimension ( so 512 dimensional vector projected to 2048 dimensional vector), and we make the 2048 dimensional vector sparse.
+That’s what SAE does.</p>
+<p>And here’s how we identify features through SAEs. We pass some inputs, and we pick up a layer, and then we reconstruct the activations of a layer by multiplying the projected dimension by decoder weights.
+So, we have an approximation of the real activation. And then we multiply the activation with the unembedding matrix( W_U) to get the logits of the target vocab.
+Here, we have an idea of what the next words are going to be based on manual inspection of the output vocab.
+If then, we find some patterns, like for a similar set of prompts, a particular index in projected dimension is getting activated, and it is mostly producing tokens that are similar in semantics, then we have found a feature which gets activated on a specific prompt.</p>
+<p>So, through SAELens, you just need to select the model, the layer you wanna probe, and the set of prompts, and see whether you can find a cool feature.</p>
+<p>The important thing is you have to select the whole dataset, and it will by itself( its unsupervised learning) find the important features for each prompt
+( The analogy is like training CNN - In CNN, we have dataset, and we want to find the weight matrix, which will decompose each picture into a category, which we have defined. Similarly, we can correlate the images dataset with the prompts dataset here, and like finding CNN weights matrix, we have to find weight matrix of the encoder and decoder of the SAE for each layer. And unlike CNN, we dont have to manually give different classes, as the method is unsupervised, it by itself finds clusters to which a certain activation might belong to)</p>
+<blockquote>
+<p>One important aspect is the details of the dataset, so the input is SAE is the d_model_dimension size of each token, and then try to reconstruct the d_model_dimension of that vector. So the whole prompt doesn’t have to do much here, except in calculating attention, but through SAE, only individual tokens go in. So we might find a particular feature is getting activated for a certain token, and then correlate it with the entire prompt.</p></blockquote>
+<p>Neuronpedia- <a href="https://www.neuronpedia.org/">https://www.neuronpedia.org/</a>
+What it does it, it has already trained for different set of prompts for different models, so you can just input your prompt, and then it will try to find in its input prompts the prompts which are most similar to your query, and output the prompts, and see which layer’s activations that prompt activates, and in which category it falls into.
+and then it will run the activations of that prompt of each layer and each token through the SAE’s encoder and decoder weights, and whether it greatly activates some specific activation( and then it goes through its training dataset, and sees which prompt resulted in activating the specific feature’s activation)</p>
+<p>SAEs are time taking because of the number of training steps to find sparse solutions using L1.
+And you have to do it for every word in the prompt.</p>
+<p>I also tried steering with features found through SAEs, feels like magic the first time you do it, but then it makes sense, and you understand what really is going on.</p>
+<p>Questions :</p>
+<ol>
+<li>
+<p>To find a particular feature, lets say if I input harmful prompts, so some feature( if it exists) should get activated,( a particular layers and a particular neuron).
+→ to do this, I have to input harmful prompts, run SAE for every layer and every word( or heuristic take middle layers), and then see the outputs that SAEs reconstructed activation vector generates, and see whether it activates harmful words or not?</p>
+</li>
+<li>
+<p>How exactly the loss function works, we put a restriction of L1 on the hidden layer of the SAEs, and it is still able to run it for every prompt, so the final SAE decoder which is constructed, is it zero for most, or is it full, and each index denoting a particular feature and there are a lot of features, and when I run a prompt, it just multiplies it with encoder and decoder weights and finds a feature. And what all the numbers in neuropedia mean</p>
+</li>
+</ol>
+<p>Okay, a rundown again: of whats going on in Neuropedia-
+It has SAE_encoder and SAE_decoder for some layers( which it received on training on huge dataset, and making activation sparse).
+Lets say we have sae weights for gemma-2b for layer 6.</p>
+<p>So, when I input a prompt, it reaches till layer 6, and then each individual token in the prompt is multiplied by SAE decoder weights, and we see the coefficient of the hidden dimension( and then we segregate based on whose coefficient is the highest).
+And once we identify, lets say index 15392 gets the highest activation ( 96) for this current prompt, we check in the training data - which training data caused it to give the highest activation.
+And then we probe into that particular index 15392, and check which all prompts gave it high activation ( and the exact token number), and then we input the prompt and the token number in GPT, and it gives some response of what it might correspond to.</p>
+<p>Now steering is different thing entirely, we have to check if we input the same prompt, what is the value of activation that it gives, and the coefficient should be the same
+2 things in steering →</p>
+<ol>
+<li>we are adding that token to any layer, to all positions, and we see that it is forced to produce that token</li>
+<li>we have to check the effective coefficient number, so for that, check if I input the same prompt into neuropedia, what is the coefficient of the feature we are adding.</li>
+</ol>
+<p>Next I am thinking if we can club adding steering vector at each layer to neuropedia’s getting activations’s coefficient out for a specific prompt</p>
+</section>
+
+  </article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">© Shivam Gupta</div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

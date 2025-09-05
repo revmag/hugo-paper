@@ -5,7 +5,7 @@ Built an encoder decoder tranformers for English to French experimenting with di
 
 """
 tags = ["data", "pipeline", "agri"]
-repo = "https://stablecoins-3ub3mwdl8-shivams-projects-dbcd6bd7.vercel.app/"
+repo = "https://github.com/revmag/Transformers-from-scratch/tree/main"
 weight = 1
 
 +++

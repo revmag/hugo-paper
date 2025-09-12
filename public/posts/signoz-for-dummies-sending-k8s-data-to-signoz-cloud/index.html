@@ -193,21 +193,17 @@ Where it&rsquo;s useful?
 <p>Instrumentation standard for application monitoring.
 It basically sends the data to your required backend.
 Main feature of OpenTelemetry is its vendor neutral APIs and data formats, and it can act as delivery pipeline for all three of traces, metrics and logs, to later convert to most exciting data formats to another. More about components of OpenTelemetry : Receivers, collectors, and exporters.</p></blockquote>
-<div class="callout">
-  💡 <strong>Goal of OpenTelemetry can be summarized as:</strong><br>
-  Open standards based interoperability and vendor neutral observability ecosystem.
-</div>
-<div class="callout">
-  💡 <strong>
-Gist :
-Kubernetes → lots and lots of different kinds of data. </strong><br>
-And OTel, gives an open source solution to collect and export this data in any format. <br>
+<pre tabindex="0"><code>Goal of OpenTelemetry can be summarized as:
+Open standards based interoperability and vendor neutral observability ecosystem.
+</code></pre><pre tabindex="0"><code>Gist :
+Kubernetes → lots and lots of different kinds of data. 
+And OTel, gives an open source solution to collect and export this data in any format. 
 And Signoz receveives this data, and makes it prettier for analysis and querying.
 Kubernetes, Opentelemtry - are top 2 projects in open source, and are associated with modern microservices architecture( nowadays, it’s prevalent, different services for different apps), and that’s where SIgnoz comes in, to monitor Kubenetes cluster with Opentelemetry, to collect, manage and display your observability data.
-<p><strong>Why is this important?</strong><Br>
-Helps you understand what’s happening in your cluster, making it easier to troubleshoot and making systems are running smoothly.</p>
-</div>
-<p>Open Telemetry has 3 components :</p>
+
+Why is this important?
+Helps you understand what’s happening in your cluster, making it easier to troubleshoot and making systems are running smoothly.
+</code></pre><p>Open Telemetry has 3 components :</p>
 <ol>
 <li>Receivers : they collect data from all sources and convert them to an internal format for sending. OTLP is OpenTelemetry’s intermediate data format.</li>
 <li>Processors : for re-processsign the data before finally sending it, and mechanisms like batching it together, and sending again if it fails, retry mechanism.</li>
@@ -228,15 +224,12 @@ Gist : mini Kubernetes playground</p></blockquote>
   <div class="home-quote">
   </div> 
  </div>
-<pre tabindex="0"><code>And once we do this, it creates a bunch of pods, these pods are ecs( for key value pair), deployment etc.
-These are essential for the master mode to work properly and manage the worker nodes.&lt;Br&gt;
-And we can also run a few pods of our own. 
-
-So we do this by running:
-
-```solidity
-kubectl apply -f podname.yaml
-</code></pre><blockquote>
+<p>And once we do this, it creates a bunch of pods, these pods are ecs( for key value pair), deployment etc.
+These are essential for the master mode to work properly and manage the worker nodes.<Br>
+And we can also run a few pods of our own.</p>
+<p>So we do this by running:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>kubectl apply <span style="color:#f92672">-</span>f podname<span style="color:#f92672">.</span>yaml
+</span></span></code></pre></div><blockquote>
 <p>What is Kubectl <br>
 →Kubernetes CLI, which facilitates running commands against your Kubernetes cluster.</p></blockquote>
 <p>And then we get list of all pods here, by running:</p>
@@ -253,11 +246,11 @@ kubectl apply -f podname.yaml
 <p>Then add Signoz helm repo :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span>helm repo add signoz https<span style="color:#f92672">:</span><span style="color:#75715e">//charts.signoz.io
 </span></span></span></code></pre></div><p>Now, as we are using Signoz cloud, for the generic case ( just simple K8s pods), we need to send data from K8s to Signoz, and here, we will use K8s-infra for that.</p>
-<p>There are 3 main Collection agents ( yeah, which facilitate sending data from cluster to Signoz cloud)<BR>
-1)K8s-Infra ( using Helm chart)<Br>
-2)OpenTelemetry Operator<Br>
-3)K8s serverless(EKS fargate)<Br></p>
-<p>Overview: <br>
+<pre tabindex="0"><code>There are 3 main Collection agents ( yeah, which facilitate sending data from cluster to Signoz cloud)
+1)K8s-Infra ( using Helm chart)
+2)OpenTelemetry Operator
+3)K8s serverless(EKS fargate)
+</code></pre><p>Overview: <br>
 So here, K8s-Infra deploys, otelAgent( pod level), and otelDeployment(cluster level), in one shot.</p>
 <p>OtelAgent : deployed as Daemonset, i.e. runs on every node of cluster, to collect node and pod level data, like CPU, memory usage, state of each pod.<Br>
 OtelDeployment : to gather cluster metrics.</p>
@@ -279,12 +272,12 @@ OtelDeployment : to gather cluster metrics.</p>
 <p>Brief about K8s-Infra :
 Collects data from cluster and sends to Signoz, acts as gateway to send any incoming OTLP telemetry data to SigNoz OtelCollector.
 K8s-Infra are not different from OpenTelemetry operator part, it just abstracts the part of deploying 2 OpenTelemetry collectors.</p></blockquote>
-<blockquote>
-<p>Observability → logs, metrics and traces.
-Metrics. — monitor things like cpu usage, memory usage
-Logs - to evaluate some things like what has been printed or not printed
-Traces —</p></blockquote>
-<p>The commands are this — you have to configure a yaml file here, so we are basically installing from the helm repo of signoz, and it has some default values, and while downloading we download that.</p>
+<pre tabindex="0"><code>Observability → logs, metrics and traces.
+Metrics. —  numeric measurements of system state over time (e.g., CPU, memory, request latency)
+Logs -  detailed event records of what happened inside a system (e.g., errors, print/debug messages)
+Traces — end-to-end path of a request across services, showing latency and bottlenecks
+ 
+</code></pre><p>The commands are this — you have to configure a yaml file here, so we are basically installing from the helm repo of signoz, and it has some default values, and while downloading we download that.</p>
 <p>So we override those values, by upgrading it with some pre configured metrics which we want to send. The metrics here are details about the kubernetes clusters and pods, which bh default are not enabled.</p>
 <p>Install the release by overriding some of the default values of OtelCollector ( here we want Kubernetes cluster data, which we have to enable)</p>
 <p>So, we have this file override-values.yaml :
@@ -343,13 +336,13 @@ This is the main part, according to our use case, like here, we just have Kubern
 <p>Signoz part :<bR>
 Go to metrics and then create dashboard.<BR>
 Now we will create different metrics <BR></p>
-<p>So we create metrics for :<BR>
-A)State of each pod ( pending , running)<BR>
-B)CPU utilization pod wise <BR>
-C)Memory usage<Br>
-D)Network errors of each pod<BR>
-E)Per pod network traffic<Br></p>
-<p>A) State of each pod</p>
+<p><strong>So we create metrics for :</strong></p>
+<pre tabindex="0"><code>A)State of each pod ( pending , running)
+B)CPU utilization pod wise 
+C)Memory usage
+D)Network errors of each pod
+E)Per pod network traffic
+</code></pre><p>A) State of each pod</p>
 <div class="home-hero">
   <img src="/images/image-5.png">
   <div class="home-quote">
@@ -420,10 +413,10 @@ We can compare this by running our command in terminal :</p>
 <h1 id="creating-an-alert">Creating an Alert</h1>
 <div class="callout">
 <strong> 💡 Now we will create an alert, we will fill the alert dashboard with the required values.</strong>
-<p>What we are creating an alert for -
-If any of the pods are in pending state for &gt;5 mins, then alert will be created.</p>
 </div>
-<p>Here is how we will fill out alert page : <BR>
+<pre tabindex="0"><code>What we are creating an alert for -
+If any of the pods are in pending state for &gt;5 mins, then alert will be created.
+</code></pre><p>Here is how we will fill out alert page : <BR>
 → Here we have selected k8s.pod.phase as metric, in the cluster - ‘kind-signoz-shivam’,
 where we filter by k8s.pod.name<BR>
 And for the Alert, we config that send a notification when value of k8s.pod.phase is equal to 1( which points to the pending state), during the last 5 mins.</p>
@@ -471,7 +464,11 @@ And for the Alert, we config that send a notification when value of k8s.pod.phas
 <a href="https://signoz.io/docs/userguide/send-metrics-cloud/">https://signoz.io/docs/userguide/send-metrics-cloud/</a><Br></p>
 </section>
 
-  </article></main><footer
+  <nav
+    class="mt-24 flex overflow-hidden rounded-xl bg-black/[3%] text-lg leading-[1.2]! *:flex *:w-1/2 *:items-center *:p-5 *:font-medium *:no-underline dark:bg-white/[8%] [&>*:hover]:bg-black/[2%] dark:[&>*:hover]:bg-white/[3%]"
+  ><a class="ltr:pr-3 rtl:pl-3" href="http://localhost:1313/posts/stocks/"
+      ><span class="ltr:mr-1.5 rtl:ml-1.5">←</span><span>Stock Market Prediction with RNN</span></a
+    ></nav></article></main><footer
   class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
 >
   <div class="mr-auto">© Shivam Gupta</div>

@@ -31,23 +31,22 @@ It basically sends the data to your required backend.
 Main feature of OpenTelemetry is its vendor neutral APIs and data formats, and it can act as delivery pipeline for all three of traces, metrics and logs, to later convert to most exciting data formats to another. More about components of OpenTelemetry : Receivers, collectors, and exporters.
 > 
 
-<div class="callout">
-  💡 <strong>Goal of OpenTelemetry can be summarized as:</strong><br>
-  Open standards based interoperability and vendor neutral observability ecosystem.
-</div>
+```
+Goal of OpenTelemetry can be summarized as:
+Open standards based interoperability and vendor neutral observability ecosystem.
+```
 
-<div class="callout">
-  💡 <strong>
+```
 Gist :
-Kubernetes → lots and lots of different kinds of data. </strong><br>
-And OTel, gives an open source solution to collect and export this data in any format. <br>
+Kubernetes → lots and lots of different kinds of data. 
+And OTel, gives an open source solution to collect and export this data in any format. 
 And Signoz receveives this data, and makes it prettier for analysis and querying.
 Kubernetes, Opentelemtry - are top 2 projects in open source, and are associated with modern microservices architecture( nowadays, it’s prevalent, different services for different apps), and that’s where SIgnoz comes in, to monitor Kubenetes cluster with Opentelemetry, to collect, manage and display your observability data.
 
-<strong>Why is this important?</strong><Br>
+Why is this important?
 Helps you understand what’s happening in your cluster, making it easier to troubleshoot and making systems are running smoothly.
 
-</div>
+```
 
 
 Open Telemetry has 3 components :
@@ -84,16 +83,19 @@ kind create cluster --name signoz-shivam
   </div> 
  </div>
 
-```
+
 And once we do this, it creates a bunch of pods, these pods are ecs( for key value pair), deployment etc.
 These are essential for the master mode to work properly and manage the worker nodes.<Br>
 And we can also run a few pods of our own. 
 
-So we do this by running:
+So we do this by running: 
 
-```solidity
+
+```python
 kubectl apply -f podname.yaml
 ```
+
+
 
 > What is Kubectl <br>
 →Kubernetes CLI, which facilitates running commands against your Kubernetes cluster.
@@ -128,10 +130,12 @@ helm repo add signoz https://charts.signoz.io
 
 Now, as we are using Signoz cloud, for the generic case ( just simple K8s pods), we need to send data from K8s to Signoz, and here, we will use K8s-infra for that.
 
-There are 3 main Collection agents ( yeah, which facilitate sending data from cluster to Signoz cloud)<BR>
-1)K8s-Infra ( using Helm chart)<Br>
-2)OpenTelemetry Operator<Br>
-3)K8s serverless(EKS fargate)<Br>
+```
+There are 3 main Collection agents ( yeah, which facilitate sending data from cluster to Signoz cloud)
+1)K8s-Infra ( using Helm chart)
+2)OpenTelemetry Operator
+3)K8s serverless(EKS fargate)
+```
 
 Overview: <br>
 So here, K8s-Infra deploys, otelAgent( pod level), and otelDeployment(cluster level), in one shot.
@@ -164,11 +168,13 @@ Collects data from cluster and sends to Signoz, acts as gateway to send any inco
 K8s-Infra are not different from OpenTelemetry operator part, it just abstracts the part of deploying 2 OpenTelemetry collectors.
 > 
 
-> Observability → logs, metrics and traces.
-Metrics. — monitor things like cpu usage, memory usage
-Logs - to evaluate some things like what has been printed or not printed
-Traces —
-> 
+```
+Observability → logs, metrics and traces.
+Metrics. —  numeric measurements of system state over time (e.g., CPU, memory, request latency)
+Logs -  detailed event records of what happened inside a system (e.g., errors, print/debug messages)
+Traces — end-to-end path of a request across services, showing latency and bottlenecks
+ 
+```
 
 The commands are this — you have to configure a yaml file here, so we are basically installing from the helm repo of signoz, and it has some default values, and while downloading we download that.
 
@@ -243,12 +249,14 @@ Signoz part :<bR>
 Go to metrics and then create dashboard.<BR>
 Now we will create different metrics <BR>
 
-So we create metrics for :<BR>
-A)State of each pod ( pending , running)<BR>
-B)CPU utilization pod wise <BR>
-C)Memory usage<Br>
-D)Network errors of each pod<BR>
-E)Per pod network traffic<Br>
+<strong>So we create metrics for :</strong>
+```
+A)State of each pod ( pending , running)
+B)CPU utilization pod wise 
+C)Memory usage
+D)Network errors of each pod
+E)Per pod network traffic
+```
 
 A) State of each pod 
 
@@ -344,10 +352,12 @@ E)Per pod network traffic
 
 <div class="callout">
 <strong> 💡 Now we will create an alert, we will fill the alert dashboard with the required values.</strong>
+</div>
 
+```
 What we are creating an alert for -
 If any of the pods are in pending state for >5 mins, then alert will be created.
-</div>
+```
 
 
 Here is how we will fill out alert page : <BR>

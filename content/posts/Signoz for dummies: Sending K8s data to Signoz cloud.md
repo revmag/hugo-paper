@@ -4,6 +4,7 @@ weight = 10
 +++
 
 Over the last few days, I’ve been diving into Kubernetes, OpenTelemetry, observability, and SigNoz, and documenting my takeaways along the way. <Br>
+
 In this post, we’ll walk through how to use SigNoz to collect Kubernetes data, send it to the SigNoz Cloud, and set up an alert that triggers whenever a pod gets stuck in a Pending state.
 
 <Br>
@@ -33,18 +34,25 @@ Main feature of OpenTelemetry is its vendor neutral APIs and data formats, and i
 
 ```
 Goal of OpenTelemetry can be summarized as:
-Open standards based interoperability and vendor neutral observability ecosystem.
+Open standards based interoperability and vendor neutral observability 
+ecosystem.
 ```
 
 ```
 Gist :
 Kubernetes → lots and lots of different kinds of data. 
-And OTel, gives an open source solution to collect and export this data in any format. 
+And OTel, gives an open source solution to collect and export this data in 
+any format. 
 And Signoz receveives this data, and makes it prettier for analysis and querying.
-Kubernetes, Opentelemtry - are top 2 projects in open source, and are associated with modern microservices architecture( nowadays, it’s prevalent, different services for different apps), and that’s where SIgnoz comes in, to monitor Kubenetes cluster with Opentelemetry, to collect, manage and display your observability data.
+Kubernetes, Opentelemtry - are top 2 projects in open source, and are associated 
+with modern microservices architecture( nowadays, it’s prevalent, different 
+services for different apps), and that’s where Signoz comes in, to monitor
+Kubenetes cluster with Opentelemetry, to collect, manage and display your
+observability data.
 
 Why is this important?
-Helps you understand what’s happening in your cluster, making it easier to troubleshoot and making systems are running smoothly.
+Helps you understand what’s happening in your cluster, making it easier to 
+troubleshoot and making systems are running smoothly.
 
 ```
 
@@ -131,7 +139,8 @@ helm repo add signoz https://charts.signoz.io
 Now, as we are using Signoz cloud, for the generic case ( just simple K8s pods), we need to send data from K8s to Signoz, and here, we will use K8s-infra for that.
 
 ```
-There are 3 main Collection agents ( yeah, which facilitate sending data from cluster to Signoz cloud)
+There are 3 main Collection agents ( yeah, which facilitate sending data from 
+cluster to Signoz cloud)
 1)K8s-Infra ( using Helm chart)
 2)OpenTelemetry Operator
 3)K8s serverless(EKS fargate)
@@ -170,9 +179,12 @@ K8s-Infra are not different from OpenTelemetry operator part, it just abstracts 
 
 ```
 Observability → logs, metrics and traces.
-Metrics. —  numeric measurements of system state over time (e.g., CPU, memory, request latency)
-Logs -  detailed event records of what happened inside a system (e.g., errors, print/debug messages)
-Traces — end-to-end path of a request across services, showing latency and bottlenecks
+Metrics. —  numeric measurements of system state over time (e.g., 
+CPU, memory, request latency)
+Logs -  detailed event records of what happened inside a system (e.g.,
+ errors, print/debug messages)
+Traces — end-to-end path of a request across services, showing 
+latency and bottlenecks
  
 ```
 

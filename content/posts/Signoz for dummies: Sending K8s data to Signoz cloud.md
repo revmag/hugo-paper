@@ -15,7 +15,7 @@ Will answer all of them.
 Kubernetes?
 
 > Kubernetes — cluster orchestration for containers, with this you can manage and track a lot of containers across different clusters.
-Where it's useful?
+Where it's useful?<br>
 — Not for everyday use cases and that's why a lot of people don't know about it, but in cases where the resources get huge and you have to manage a lot of cluster, like for large applications.
 > 
 
@@ -27,8 +27,8 @@ And what does signoz exactly do?
 Wait, what’s OpenTelemetry?
 
 > Instrumentation standard for application monitoring.
-It basically sends the data to your required backend.
-Main feature of OpenTelemetry is its vendor neutral APIs and data formats, and it can act as delivery pipeline for all three of traces, metrics and logs, to later convert to most exciting data formats to another. More about components of OpenTelemetry : Receivers, collectors, and exporters.
+It basically sends the data to your required backend.<Br>
+Main feature of OpenTelemetry is its vendor neutral APIs and data formats, and it can act as delivery pipeline for all three of traces, metrics and logs, to later convert to most exciting data formats to another. More about components of OpenTelemetry later: Receivers, collectors, and exporters.
 > 
 
 ```

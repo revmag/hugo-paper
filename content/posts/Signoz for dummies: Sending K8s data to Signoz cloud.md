@@ -3,8 +3,8 @@ title = "Signoz for dummies: Sending K8s data to Signoz cloud"
 weight = 10
 +++
 
-Hello,
-We are going to use Signoz to send Kubernetes data to Signoz cloud, and then create an alert if one of the pods are in pending state.
+Over the last few days, I’ve been diving into Kubernetes, OpenTelemetry, observability, and SigNoz, and documenting my takeaways along the way. <Br>
+In this post, we’ll walk through how to use SigNoz to collect Kubernetes data, send it to the SigNoz Cloud, and set up an alert that triggers whenever a pod gets stuck in a Pending state.
 
 <Br>
 So lets get started :<Br>

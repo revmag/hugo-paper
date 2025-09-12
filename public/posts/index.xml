@@ -64,5 +64,12 @@
       <guid>http://localhost:1313/posts/stocks/</guid>
       <description>&lt;p&gt;In trying to predict the closing price of a stock, if we have opening, high, and closing price for several days, I encountered a few questions.&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;How should my input be, and what should my output be?&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;—&amp;gt;  I knew all the backprop steps in calculating RNN, but I was not able to figure out, what it means to apply sequence to sequence modeling here, how many days should determine the output of the next days( like should a sequence of 7 days determine the output of the 8th day, or lesser or more, or should only 1 day determine the output of next day, and i should calculate my output prediction of all the days, and how should my hidden layer be, do i calculate output at every day, and Hoping to pass hidden state value at every step)&lt;/p&gt;</description>
     </item>
+    <item>
+      <title>Signoz for dummies: Sending K8s data to Signoz cloud</title>
+      <link>http://localhost:1313/posts/signoz-for-dummies-sending-k8s-data-to-signoz-cloud/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/signoz-for-dummies-sending-k8s-data-to-signoz-cloud/</guid>
+      <description>&lt;p&gt;Hello,&#xA;We are going to use Signoz to send Kubernetes data to Signoz cloud, and then create an alert if one of the pods are in pending state.&lt;/p&gt;&#xA;&lt;Br&gt;&#xA;So lets get started :&lt;Br&gt;&#xA;Firstly, &#xA;What is Kubernetes, what is this thing we are doing here, where does Signoz come into the picture, can we do it without Signoz.&#xA;Will answer all of them.&#xA;&lt;p&gt;Kubernetes?&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Kubernetes — cluster orchestration for containers, with this you can manage and track a lot of containers across different clusters.&#xA;Where it&amp;rsquo;s useful?&#xA;— Not for everyday use cases and that&amp;rsquo;s why a lot of people don&amp;rsquo;t know about it, but in cases where the resources get huge and you have to manage a lot of cluster, like for large applications.&lt;/p&gt;</description>
+    </item>
   </channel>
 </rss>

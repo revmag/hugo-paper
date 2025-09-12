@@ -1,0 +1,490 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:"
+  lang="en"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Signoz for dummies: Sending K8s data to Signoz cloud - Shivam Gupta</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="Hello,
+We are going to use Signoz to send Kubernetes data to Signoz cloud, and then create an alert if one of the pods are in pending state.
+
+So lets get started :
+Firstly, 
+What is Kubernetes, what is this thing we are doing here, where does Signoz come into the picture, can we do it without Signoz.
+Will answer all of them.
+Kubernetes?
+
+Kubernetes — cluster orchestration for containers, with this you can manage and track a lot of containers across different clusters.
+Where it&rsquo;s useful?
+— Not for everyday use cases and that&rsquo;s why a lot of people don&rsquo;t know about it, but in cases where the resources get huge and you have to manage a lot of cluster, like for large applications." />
+  <meta name="author" content="Shivam Gupta" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.css" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.png" />
+
+  <link rel="preload" as="image" href="https://www.gravatar.com/avatar/a81bbaf54d8b4232f35a22cad694eaa6?s=160&amp;d=identicon" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/twitter.svg" /><link rel="preload" as="image" href="http://localhost:1313/github.svg" />
+
+  <script
+    defer
+    src="http://localhost:1313/highlight.min.js"
+    onload="hljs.initHighlightingOnLoad();"
+  ></script>
+
+  
+  <link
+    rel="icon"
+    href="http://localhost:1313/favicon.ico"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="http://localhost:1313/apple-touch-icon.png"
+  />
+
+  <meta name="generator" content="Hugo 0.148.2">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header
+  class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center"
+>
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a
+      class="-translate-y-[1px] text-2xl font-medium"
+      href="http://localhost:1313/"
+      >Shivam Gupta</a
+    >
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.png)_left_center/_auto_theme('spacing.6')_no-repeat] [transition:_background-position_0.4s_steps(5)] dark:[background-position:right]"
+      role="button"
+      aria-label="Dark"
+    ></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button"
+    aria-label="Menu"
+  ></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = ''.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"
+  ><nav
+      class="lg:ml-12 lg:flex lg:flex-row lg:items-center lg:space-x-10 rtl:space-x-reverse"
+    ><a
+        class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal"
+        href="/projects/"
+        >Projects</a
+      ><a
+        class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal"
+        href="/posts/"
+        >Blog</a
+      ><a
+        class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal"
+        href="/misc/"
+        >Misc</a
+      ></nav><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert"
+    >
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./twitter.svg)"
+        href="https://twitter.com/https://twitter.com/reversemagnus"
+        target="_blank"
+        rel="me"
+      >twitter</a>
+      <a
+        class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/https://github.com/revmag"
+        target="_blank"
+        rel="me"
+      >github</a>
+    </nav>
+  </div>
+</header>
+<main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">Signoz for dummies: Sending K8s data to Signoz cloud</h1><div class="text-xs antialiased opacity-60"></div></header>
+
+  <section><p>Hello,
+We are going to use Signoz to send Kubernetes data to Signoz cloud, and then create an alert if one of the pods are in pending state.</p>
+<Br>
+So lets get started :<Br>
+Firstly, 
+What is Kubernetes, what is this thing we are doing here, where does Signoz come into the picture, can we do it without Signoz.
+Will answer all of them.
+<p>Kubernetes?</p>
+<blockquote>
+<p>Kubernetes — cluster orchestration for containers, with this you can manage and track a lot of containers across different clusters.
+Where it&rsquo;s useful?
+— Not for everyday use cases and that&rsquo;s why a lot of people don&rsquo;t know about it, but in cases where the resources get huge and you have to manage a lot of cluster, like for large applications.</p></blockquote>
+<p>And what does signoz exactly do?</p>
+<blockquote>
+<p>It is a full stack thing ( in more formal terms, full stack open source APM ) to monitor how the kubernetes cluster is. Like the state of each pod, container, total memory used, cpu utilisation of each container. It uses the famous OpenTelemetry to collect metrics from your K8s cluster.</p></blockquote>
+<p>Wait, what’s OpenTelemetry?</p>
+<blockquote>
+<p>Instrumentation standard for application monitoring.
+It basically sends the data to your required backend.
+Main feature of OpenTelemetry is its vendor neutral APIs and data formats, and it can act as delivery pipeline for all three of traces, metrics and logs, to later convert to most exciting data formats to another. More about components of OpenTelemetry : Receivers, collectors, and exporters.</p></blockquote>
+<div class="callout">
+  💡 <strong>Goal of OpenTelemetry can be summarized as:</strong><br>
+  Open standards based interoperability and vendor neutral observability ecosystem.
+</div>
+<div class="callout">
+  💡 <strong>
+Gist :
+Kubernetes → lots and lots of different kinds of data. </strong><br>
+And OTel, gives an open source solution to collect and export this data in any format. <br>
+And Signoz receveives this data, and makes it prettier for analysis and querying.
+Kubernetes, Opentelemtry - are top 2 projects in open source, and are associated with modern microservices architecture( nowadays, it’s prevalent, different services for different apps), and that’s where SIgnoz comes in, to monitor Kubenetes cluster with Opentelemetry, to collect, manage and display your observability data.
+<p><strong>Why is this important?</strong><Br>
+Helps you understand what’s happening in your cluster, making it easier to troubleshoot and making systems are running smoothly.</p>
+</div>
+<p>Open Telemetry has 3 components :</p>
+<ol>
+<li>Receivers : they collect data from all sources and convert them to an internal format for sending. OTLP is OpenTelemetry’s intermediate data format.</li>
+<li>Processors : for re-processsign the data before finally sending it, and mechanisms like batching it together, and sending again if it fails, retry mechanism.</li>
+<li>Exporters : they further send the processed data after receiving from processors, by converting them to a target data-sink specific format.</li>
+</ol>
+<p>Helm presets like <em>kubeletMetrics</em>, <em>logsCollection</em>, and <em>clusterMetrics</em> make it easy to configure receivers and processors without writing full config blocks manually.</p>
+<h1 id="so-lets-get-started">So let’s get started</h1>
+<p>We will simulate a small kubernetes cluster on our pc using kind.</p>
+<p>Firstly install kind :</p>
+<blockquote>
+<p>Kind : Kubernetes in docker, tool that lets us run a full Kubernetes cluster inside Docker containers.
+Gist : mini Kubernetes playground</p></blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span>Brew install kind
+</span></span></code></pre></div><p>Then create a cluster</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span>kind create cluster <span style="color:#f92672">--</span>name signoz<span style="color:#f92672">-</span>shivam
+</span></span></code></pre></div><div class="home-hero">
+  <img src="/images/image-21.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<pre tabindex="0"><code>And once we do this, it creates a bunch of pods, these pods are ecs( for key value pair), deployment etc.
+These are essential for the master mode to work properly and manage the worker nodes.&lt;Br&gt;
+And we can also run a few pods of our own. 
+
+So we do this by running:
+
+```solidity
+kubectl apply -f podname.yaml
+</code></pre><blockquote>
+<p>What is Kubectl <br>
+→Kubernetes CLI, which facilitates running commands against your Kubernetes cluster.</p></blockquote>
+<p>And then we get list of all pods here, by running:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span>Kubectl get pods <span style="color:#f92672">-</span>A
+</span></span></code></pre></div><div class="home-hero">
+  <img src="/images/image-1.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<p>Then,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span>Brew install helm
+</span></span></code></pre></div><blockquote>
+<p>Helm is Kubernetes packet manager, for installing kubernetes stuff.</p></blockquote>
+<p>Then add Signoz helm repo :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span>helm repo add signoz https<span style="color:#f92672">:</span><span style="color:#75715e">//charts.signoz.io
+</span></span></span></code></pre></div><p>Now, as we are using Signoz cloud, for the generic case ( just simple K8s pods), we need to send data from K8s to Signoz, and here, we will use K8s-infra for that.</p>
+<p>There are 3 main Collection agents ( yeah, which facilitate sending data from cluster to Signoz cloud)<BR>
+1)K8s-Infra ( using Helm chart)<Br>
+2)OpenTelemetry Operator<Br>
+3)K8s serverless(EKS fargate)<Br></p>
+<p>Overview: <br>
+So here, K8s-Infra deploys, otelAgent( pod level), and otelDeployment(cluster level), in one shot.</p>
+<p>OtelAgent : deployed as Daemonset, i.e. runs on every node of cluster, to collect node and pod level data, like CPU, memory usage, state of each pod.<Br>
+OtelDeployment : to gather cluster metrics.</p>
+<p>Crazy visualtion of how it works :</p>
+<div class="home-hero">
+  <img src="/images/image-2.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<div class="home-hero">
+  <img src="/images/image-3.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<p>After this, collector is installed and will automatically send telemetry data from your cluster and send them to SigNoz.</p>
+<p>We will use k8s infra for sending the data of the kubernetes, there are 2 options - either this or opentelemetry collector and Installer.</p>
+<p>K8s-infra installs telemetry operator and collector.</p>
+<blockquote>
+<p>Brief about K8s-Infra :
+Collects data from cluster and sends to Signoz, acts as gateway to send any incoming OTLP telemetry data to SigNoz OtelCollector.
+K8s-Infra are not different from OpenTelemetry operator part, it just abstracts the part of deploying 2 OpenTelemetry collectors.</p></blockquote>
+<blockquote>
+<p>Observability → logs, metrics and traces.
+Metrics. — monitor things like cpu usage, memory usage
+Logs - to evaluate some things like what has been printed or not printed
+Traces —</p></blockquote>
+<p>The commands are this — you have to configure a yaml file here, so we are basically installing from the helm repo of signoz, and it has some default values, and while downloading we download that.</p>
+<p>So we override those values, by upgrading it with some pre configured metrics which we want to send. The metrics here are details about the kubernetes clusters and pods, which bh default are not enabled.</p>
+<p>Install the release by overriding some of the default values of OtelCollector ( here we want Kubernetes cluster data, which we have to enable)</p>
+<p>So, we have this file override-values.yaml :
+This is the main part, according to our use case, like here, we just have Kubernetes pods, if we have some applications of some language, we have to set the override-values.yaml file as required.</p>
+<p>override-values.yaml</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">global</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">cloud</span>: <span style="color:#ae81ff">others</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">clusterName</span>: <span style="color:#ae81ff">kind-signoz-shivam</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">deploymentEnvironment</span>: <span style="color:#ae81ff">dev</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">otelCollectorEndpoint</span>: <span style="color:#ae81ff">ingest.in.signoz.cloud:443</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">otelInsecure</span>: <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">signozApiKey</span>: <span style="color:#ae81ff">&lt;SIGNOZ_INGESTION_KEY&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">presets</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">otlpExporter</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Node/pod/container metrics from each node (DaemonSet)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">kubeletMetrics</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">collectionInterval</span>: <span style="color:#ae81ff">30s</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">insecureSkipVerify</span>: <span style="color:#66d9ef">true</span>   
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Cluster-wide metrics &amp; events (Deployment) — gives you k8s_pod_phase, etc.</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">clusterMetrics</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">metrics</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">k8s.pod.phase</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">k8s.pod.status_reason</span>:   
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">k8s.namespace.phase</span>:     
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Useful extras:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">kubernetesAttributes</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">hostMetrics</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">logsCollection</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">k8sEvents</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
+</span></span></code></pre></div><ol>
+<li>Then install k8s-infra chart with above config :</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span>helm install k8s<span style="color:#f92672">-</span>infra signoz<span style="color:#f92672">/</span>k8s<span style="color:#f92672">-</span>infra <span style="color:#f92672">-</span>n observability <span style="color:#f92672">--</span>create<span style="color:#f92672">-</span>namespace 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">-</span>f <span style="color:#66d9ef">override</span><span style="color:#f92672">-</span>values.yaml
+</span></span></code></pre></div><div class="home-hero">
+  <img src="/images/image-4.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<p>And once we deploy the k8s, we are ready to send data in our signoz dashboard.</p>
+<p>Signoz part :<bR>
+Go to metrics and then create dashboard.<BR>
+Now we will create different metrics <BR></p>
+<p>So we create metrics for :<BR>
+A)State of each pod ( pending , running)<BR>
+B)CPU utilization pod wise <BR>
+C)Memory usage<Br>
+D)Network errors of each pod<BR>
+E)Per pod network traffic<Br></p>
+<p>A) State of each pod</p>
+<div class="home-hero">
+  <img src="/images/image-5.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<p>The pods running are represented as 2, and pods in pending state values return 1.</p>
+<p>Code is this :<BR>
+So we get pod status for each pod, if return is 1, it means pending, and if return is 2, it means running.</p>
+<div class="home-hero">
+  <img src="/images/image-6.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<p>So here we have 11 running and 1 pending pod.<BR>
+We can compare this by running our command in terminal :</p>
+<div class="home-hero">
+  <img src="/images/image-7.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<p>Which matches with running and pending pods!</p>
+<p>B) CPU utilization pod wise</p>
+<div class="home-hero">
+  <img src="/images/image-8.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<p>Code :</p>
+<div class="home-hero">
+  <img src="/images/image-9.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<p>C)Memory usage</p>
+<div class="home-hero">
+  <img src="/images/image-10.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<p>Code :</p>
+<div class="home-hero">
+  <img src="/images/image-11.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<p>D)Network errors of each pod</p>
+<div class="home-hero">
+  <img src="/images/image-12.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<div class="home-hero">
+  <img src="/images/image-13.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<p>E)Per pod network traffic</p>
+<div class="home-hero">
+  <img src="/images/image-14.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<div class="home-hero">
+  <img src="/images/image-15.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<h1 id="creating-an-alert">Creating an Alert</h1>
+<div class="callout">
+<strong> 💡 Now we will create an alert, we will fill the alert dashboard with the required values.</strong>
+<p>What we are creating an alert for -
+If any of the pods are in pending state for &gt;5 mins, then alert will be created.</p>
+</div>
+<p>Here is how we will fill out alert page : <BR>
+→ Here we have selected k8s.pod.phase as metric, in the cluster - ‘kind-signoz-shivam’,
+where we filter by k8s.pod.name<BR>
+And for the Alert, we config that send a notification when value of k8s.pod.phase is equal to 1( which points to the pending state), during the last 5 mins.</p>
+<div class="home-hero">
+  <img src="/images/image-16.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<div class="home-hero">
+  <img src="/images/image-17.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<div class="home-hero">
+  <img src="/images/image-18.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<p>Now when we run the query we can see:</p>
+<div class="home-hero">
+  <img src="/images/image-19.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<p>When the threshold equals 1→ pending pod demo</p>
+<p>For other pods →</p>
+<div class="home-hero">
+  <img src="/images/image-20.png">
+  <div class="home-quote">
+  </div> 
+ </div>
+<p>You can see the value is high up.</p>
+<p>So we have setup our whole thing here.</p>
+<p>Links :<br>
+<a href="https://signoz.io/blog/opentelemetry-kubernetes/">https://signoz.io/blog/opentelemetry-kubernetes/</a><br>
+<a href="https://signoz.io/blog/kubectl-top/">https://signoz.io/blog/kubectl-top/</a><br>
+<a href="https://signoz.io/blog/kubernetes-observability-with-opentelemetry/">https://signoz.io/blog/kubernetes-observability-with-opentelemetry/</a><Br>
+<a href="https://signoz.io/blog/kubernetes-events-monitoring/">https://signoz.io/blog/kubernetes-events-monitoring/</a><Br>
+<a href="https://signoz.io/blog/using-signoz-to-monitor-your-kubernetes-cluster/">https://signoz.io/blog/using-signoz-to-monitor-your-kubernetes-cluster/</a><br>
+<a href="https://signoz.io/blog/opentelemetry-kubernetes-cluster-metrics-monitoring/">https://signoz.io/blog/opentelemetry-kubernetes-cluster-metrics-monitoring/</a><Br>
+<a href="https://signoz.io/blog/kubernetes-logging/">https://signoz.io/blog/kubernetes-logging/</a><Br>
+<a href="https://signoz.io/docs/collection-agents/get-started/">https://signoz.io/docs/collection-agents/get-started/</a><Br>
+<a href="https://signoz.io/docs/collection-agents/k8s/k8s-infra/overview/">https://signoz.io/docs/collection-agents/k8s/k8s-infra/overview/</a><br>
+<a href="https://signoz.io/docs/collection-agents/k8s/k8s-infra/configure-k8s-infra/">https://signoz.io/docs/collection-agents/k8s/k8s-infra/configure-k8s-infra/</a><Br>
+<a href="https://signoz.io/docs/userguide/send-metrics-cloud/">https://signoz.io/docs/userguide/send-metrics-cloud/</a><Br></p>
+</section>
+
+  </article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">© Shivam Gupta</div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>

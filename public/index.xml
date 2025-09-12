@@ -162,5 +162,12 @@
       <guid>http://localhost:1313/projects/video-vision-transformers/</guid>
       <description>Implemented Pytorch version of ViVIT to classify MedMNIST dataset, sampling 3D frames using Tubelet Embedding&#xA;Sampling method, dissecting video into spatial and temporal tokens, and inputting this as embedding to Transformer</description>
     </item>
+    <item>
+      <title>Signoz for dummies: Sending K8s data to Signoz cloud</title>
+      <link>http://localhost:1313/posts/signoz-for-dummies-sending-k8s-data-to-signoz-cloud/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/signoz-for-dummies-sending-k8s-data-to-signoz-cloud/</guid>
+      <description>&lt;p&gt;Hello,&#xA;We are going to use Signoz to send Kubernetes data to Signoz cloud, and then create an alert if one of the pods are in pending state.&lt;/p&gt;&#xA;&lt;Br&gt;&#xA;So lets get started :&lt;Br&gt;&#xA;Firstly, &#xA;What is Kubernetes, what is this thing we are doing here, where does Signoz come into the picture, can we do it without Signoz.&#xA;Will answer all of them.&#xA;&lt;p&gt;Kubernetes?&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Kubernetes — cluster orchestration for containers, with this you can manage and track a lot of containers across different clusters.&#xA;Where it&amp;rsquo;s useful?&#xA;— Not for everyday use cases and that&amp;rsquo;s why a lot of people don&amp;rsquo;t know about it, but in cases where the resources get huge and you have to manage a lot of cluster, like for large applications.&lt;/p&gt;</description>
+    </item>
   </channel>
 </rss>

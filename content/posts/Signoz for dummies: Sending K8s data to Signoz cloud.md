@@ -6,7 +6,6 @@ weight = 10
 Over the last few days, I’ve been diving into Kubernetes, OpenTelemetry, observability, and SigNoz, and documenting my takeaways along the way. <Br>
 
 In this post, we’ll walk through how to use SigNoz to collect Kubernetes data, send it to the SigNoz Cloud, and set up an alert that triggers whenever a pod gets stuck in a Pending state.
-
 <Br>
 So lets get started :<Br>
 Firstly, 
@@ -14,19 +13,16 @@ What is Kubernetes, what is this thing we are doing here, where does Signoz come
 Will answer all of them.
 
 Kubernetes?
-
 > Kubernetes — cluster orchestration for containers, with this you can manage and track a lot of containers across different clusters.
 Where it's useful?<br>
 — Not for everyday use cases and that's why a lot of people don't know about it, but in cases where the resources get huge and you have to manage a lot of cluster, like for large applications.
 > 
 
 And what does signoz exactly do?
-
 > It is a full stack thing ( in more formal terms, full stack open source APM ) to monitor how the kubernetes cluster is. Like the state of each pod, container, total memory used, cpu utilisation of each container. It uses the famous OpenTelemetry to collect metrics from your K8s cluster.
 > 
 
 Wait, what’s OpenTelemetry?
-
 > Instrumentation standard for application monitoring.
 It basically sends the data to your required backend.<Br>
 Main feature of OpenTelemetry is its vendor neutral APIs and data formats, and it can act as delivery pipeline for all three of traces, metrics and logs, to later convert to most exciting data formats to another. More about components of OpenTelemetry later: Receivers, collectors, and exporters.

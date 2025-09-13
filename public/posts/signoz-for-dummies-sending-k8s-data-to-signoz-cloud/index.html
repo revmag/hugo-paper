@@ -25,18 +25,13 @@
   
   <meta name="theme-color" />
 
-  <meta name="description" content="Hello,
-We are going to use Signoz to send Kubernetes data to Signoz cloud, and then create an alert if one of the pods are in pending state.
+  <meta name="description" content="Over the last few days, I’ve been diving into Kubernetes, OpenTelemetry, observability, and SigNoz, and documenting my takeaways along the way. 
+In this post, we’ll walk through how to use SigNoz to collect Kubernetes data, send it to the SigNoz Cloud, and set up an alert that triggers whenever a pod gets stuck in a Pending state.
 
 So lets get started :
 Firstly, 
-What is Kubernetes, what is this thing we are doing here, where does Signoz come into the picture, can we do it without Signoz.
-Will answer all of them.
-Kubernetes?
-
-Kubernetes — cluster orchestration for containers, with this you can manage and track a lot of containers across different clusters.
-Where it&rsquo;s useful?
-— Not for everyday use cases and that&rsquo;s why a lot of people don&rsquo;t know about it, but in cases where the resources get huge and you have to manage a lot of cluster, like for large applications." />
+What is Kubernetes, What is this thing we are doing here, Where does Signoz come into the picture, Can we do it without Signoz.
+Will answer all of them." />
   <meta name="author" content="Shivam Gupta" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.css" />
 
   
@@ -173,36 +168,44 @@ Where it&rsquo;s useful?
   <header class="mb-14">
     <h1 class="my-0! pb-2.5">Signoz for dummies: Sending K8s data to Signoz cloud</h1><div class="text-xs antialiased opacity-60"></div></header>
 
-  <section><p>Hello,
-We are going to use Signoz to send Kubernetes data to Signoz cloud, and then create an alert if one of the pods are in pending state.</p>
+  <section><p>Over the last few days, I’ve been diving into Kubernetes, OpenTelemetry, observability, and SigNoz, and documenting my takeaways along the way. <Br></p>
+<p>In this post, we’ll walk through how to use SigNoz to collect Kubernetes data, send it to the SigNoz Cloud, and set up an alert that triggers whenever a pod gets stuck in a Pending state.
 <Br>
 So lets get started :<Br>
-Firstly, 
-What is Kubernetes, what is this thing we are doing here, where does Signoz come into the picture, can we do it without Signoz.
-Will answer all of them.
+Firstly, <br>
+What is Kubernetes, What is this thing we are doing here, Where does Signoz come into the picture, Can we do it without Signoz.
+Will answer all of them.</p>
 <p>Kubernetes?</p>
 <blockquote>
 <p>Kubernetes — cluster orchestration for containers, with this you can manage and track a lot of containers across different clusters.
-Where it&rsquo;s useful?
+<br>
+Where it&rsquo;s useful?<br>
 — Not for everyday use cases and that&rsquo;s why a lot of people don&rsquo;t know about it, but in cases where the resources get huge and you have to manage a lot of cluster, like for large applications.</p></blockquote>
-<p>And what does signoz exactly do?</p>
+<p>And what does Signoz exactly do?</p>
 <blockquote>
-<p>It is a full stack thing ( in more formal terms, full stack open source APM ) to monitor how the kubernetes cluster is. Like the state of each pod, container, total memory used, cpu utilisation of each container. It uses the famous OpenTelemetry to collect metrics from your K8s cluster.</p></blockquote>
+<p>It is a full stack application ( in more formal terms, full stack open source APM ) to monitor how the kubernetes cluster is. Like the state of each pod, container, total memory used, cpu utilisation of each container. It uses the famous OpenTelemetry to collect metrics from your K8s cluster.</p></blockquote>
 <p>Wait, what’s OpenTelemetry?</p>
 <blockquote>
 <p>Instrumentation standard for application monitoring.
-It basically sends the data to your required backend.
-Main feature of OpenTelemetry is its vendor neutral APIs and data formats, and it can act as delivery pipeline for all three of traces, metrics and logs, to later convert to most exciting data formats to another. More about components of OpenTelemetry : Receivers, collectors, and exporters.</p></blockquote>
+It basically sends the data to your required backend.<Br>
+Main feature of OpenTelemetry is its vendor neutral APIs and data formats, and it can act as delivery pipeline for all three of traces, metrics and logs, to later convert to most exciting data formats to another. More about components of OpenTelemetry later: Receivers, collectors, and exporters.</p></blockquote>
 <pre tabindex="0"><code>Goal of OpenTelemetry can be summarized as:
-Open standards based interoperability and vendor neutral observability ecosystem.
+Open standards based interoperability and vendor neutral observability 
+ecosystem.
 </code></pre><pre tabindex="0"><code>Gist :
 Kubernetes → lots and lots of different kinds of data. 
-And OTel, gives an open source solution to collect and export this data in any format. 
+And OTel, gives an open source solution to collect and export this data in 
+any format. 
 And Signoz receveives this data, and makes it prettier for analysis and querying.
-Kubernetes, Opentelemtry - are top 2 projects in open source, and are associated with modern microservices architecture( nowadays, it’s prevalent, different services for different apps), and that’s where SIgnoz comes in, to monitor Kubenetes cluster with Opentelemetry, to collect, manage and display your observability data.
+Kubernetes, Opentelemtry - are top 2 projects in open source, and are associated 
+with modern microservices architecture( nowadays, it’s prevalent, different 
+services for different apps), and that’s where Signoz comes in, to monitor
+Kubenetes cluster with Opentelemetry, to collect, manage and display your
+observability data.
 
 Why is this important?
-Helps you understand what’s happening in your cluster, making it easier to troubleshoot and making systems are running smoothly.
+Helps you understand what’s happening in your cluster, making it easier to 
+troubleshoot and making systems are running smoothly.
 </code></pre><p>Open Telemetry has 3 components :</p>
 <ol>
 <li>Receivers : they collect data from all sources and convert them to an internal format for sending. OTLP is OpenTelemetry’s intermediate data format.</li>
@@ -211,10 +214,10 @@ Helps you understand what’s happening in your cluster, making it easier to tro
 </ol>
 <p>Helm presets like <em>kubeletMetrics</em>, <em>logsCollection</em>, and <em>clusterMetrics</em> make it easy to configure receivers and processors without writing full config blocks manually.</p>
 <h1 id="so-lets-get-started">So let’s get started</h1>
-<p>We will simulate a small kubernetes cluster on our pc using kind.</p>
+<p>We will simulate a small kubernetes cluster on our local machine using kind and set up SigNoz monitoring.</p>
 <p>Firstly install kind :</p>
 <blockquote>
-<p>Kind : Kubernetes in docker, tool that lets us run a full Kubernetes cluster inside Docker containers.
+<p>Kind : Kubernetes in docker, tool that lets us run a full Kubernetes cluster inside Docker containers. <br>
 Gist : mini Kubernetes playground</p></blockquote>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span>Brew install kind
 </span></span></code></pre></div><p>Then create a cluster</p>
@@ -224,14 +227,14 @@ Gist : mini Kubernetes playground</p></blockquote>
   <div class="home-quote">
   </div> 
  </div>
-<p>And once we do this, it creates a bunch of pods, these pods are ecs( for key value pair), deployment etc.
+<p>And once we do this,it spins up control-plane(master) and worker nodes inside Docker. It creates a bunch of Kubernetes system pods (e.g., etcd for key–value storage, coreDNS for DNS resolution, kube-apiserver, controller-manager, scheduler). <br>
 These are essential for the master mode to work properly and manage the worker nodes.<Br>
 And we can also run a few pods of our own.</p>
 <p>So we do this by running:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>kubectl apply <span style="color:#f92672">-</span>f podname<span style="color:#f92672">.</span>yaml
 </span></span></code></pre></div><blockquote>
 <p>What is Kubectl <br>
-→Kubernetes CLI, which facilitates running commands against your Kubernetes cluster.</p></blockquote>
+Kubernetes CLI, which facilitates running commands against your Kubernetes cluster.</p></blockquote>
 <p>And then we get list of all pods here, by running:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span>Kubectl get pods <span style="color:#f92672">-</span>A
 </span></span></code></pre></div><div class="home-hero">
@@ -239,22 +242,23 @@ And we can also run a few pods of our own.</p>
   <div class="home-quote">
   </div> 
  </div>
-<p>Then,</p>
+<p>Then, Install Helm</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span>Brew install helm
 </span></span></code></pre></div><blockquote>
 <p>Helm is Kubernetes packet manager, for installing kubernetes stuff.</p></blockquote>
 <p>Then add Signoz helm repo :</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span>helm repo add signoz https<span style="color:#f92672">:</span><span style="color:#75715e">//charts.signoz.io
 </span></span></span></code></pre></div><p>Now, as we are using Signoz cloud, for the generic case ( just simple K8s pods), we need to send data from K8s to Signoz, and here, we will use K8s-infra for that.</p>
-<pre tabindex="0"><code>There are 3 main Collection agents ( yeah, which facilitate sending data from cluster to Signoz cloud)
-1)K8s-Infra ( using Helm chart)
-2)OpenTelemetry Operator
-3)K8s serverless(EKS fargate)
-</code></pre><p>Overview: <br>
-So here, K8s-Infra deploys, otelAgent( pod level), and otelDeployment(cluster level), in one shot.</p>
+<pre tabindex="0"><code>There are 3 main Collection agents ( yeah, which facilitate sending data from 
+cluster to Signoz cloud)
+1)K8s-Infra ( Helm chart) -&gt; Quickest setup
+2)OpenTelemetry Operator -&gt; flexible, but requires more work
+3)K8s serverless(EKS fargate) -&gt; for AWS serverless clusters.
+</code></pre><p>Focus: <br>
+K8s-Infra -&gt; deploys otelAgent( pod level), and otelDeployment(cluster level), in one shot.</p>
 <p>OtelAgent : deployed as Daemonset, i.e. runs on every node of cluster, to collect node and pod level data, like CPU, memory usage, state of each pod.<Br>
 OtelDeployment : to gather cluster metrics.</p>
-<p>Crazy visualtion of how it works :</p>
+<p>Crazy visualization of how it works :</p>
 <div class="home-hero">
   <img src="/images/image-2.png">
   <div class="home-quote">
@@ -265,23 +269,22 @@ OtelDeployment : to gather cluster metrics.</p>
   <div class="home-quote">
   </div> 
  </div>
-<p>After this, collector is installed and will automatically send telemetry data from your cluster and send them to SigNoz.</p>
-<p>We will use k8s infra for sending the data of the kubernetes, there are 2 options - either this or opentelemetry collector and Installer.</p>
-<p>K8s-infra installs telemetry operator and collector.</p>
 <blockquote>
 <p>Brief about K8s-Infra :
 Collects data from cluster and sends to Signoz, acts as gateway to send any incoming OTLP telemetry data to SigNoz OtelCollector.
 K8s-Infra are not different from OpenTelemetry operator part, it just abstracts the part of deploying 2 OpenTelemetry collectors.</p></blockquote>
-<pre tabindex="0"><code>Observability → logs, metrics and traces.
-Metrics. —  numeric measurements of system state over time (e.g., CPU, memory, request latency)
-Logs -  detailed event records of what happened inside a system (e.g., errors, print/debug messages)
-Traces — end-to-end path of a request across services, showing latency and bottlenecks
+<pre tabindex="0"><code>K8s-Infra enables full observability by collecting:
+Metrics —  numeric measurements of system state over time (e.g., 
+CPU, memory, request latency)
+Logs -  detailed event records of what happened inside a system (e.g.,
+ errors, print/debug messages)
+Traces — end-to-end path of a request across services, showing 
+latency and bottlenecks
  
-</code></pre><p>The commands are this — you have to configure a yaml file here, so we are basically installing from the helm repo of signoz, and it has some default values, and while downloading we download that.</p>
-<p>So we override those values, by upgrading it with some pre configured metrics which we want to send. The metrics here are details about the kubernetes clusters and pods, which bh default are not enabled.</p>
-<p>Install the release by overriding some of the default values of OtelCollector ( here we want Kubernetes cluster data, which we have to enable)</p>
-<p>So, we have this file override-values.yaml :
-This is the main part, according to our use case, like here, we just have Kubernetes pods, if we have some applications of some language, we have to set the override-values.yaml file as required.</p>
+</code></pre><h2 id="configuring-k8s-infra">Configuring K8s-Infra</h2>
+<p>When installing from the SigNoz Helm repo, you can override default values to specify what telemetry to collect. And we are using
+yaml file override-values.yaml here.</p>
+<p>So we override those values, by upgrading it with some pre configured metrics which we want to send. The metrics here are details about the kubernetes clusters and pods, which by default are not enabled( here we want Kubernetes cluster data, which we have to enable).</p>
 <p>override-values.yaml</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">global</span>:
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">cloud</span>: <span style="color:#ae81ff">others</span>
@@ -313,7 +316,6 @@ This is the main part, according to our use case, like here, we just have Kubern
 </span></span><span style="display:flex;"><span>      <span style="color:#f92672">k8s.namespace.phase</span>:     
 </span></span><span style="display:flex;"><span>        <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Useful extras:</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">kubernetesAttributes</span>:
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">hostMetrics</span>:
@@ -322,9 +324,7 @@ This is the main part, according to our use case, like here, we just have Kubern
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">k8sEvents</span>:
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
-</span></span></code></pre></div><ol>
-<li>Then install k8s-infra chart with above config :</li>
-</ol>
+</span></span></code></pre></div><p>Once the config is ready, install the Helm chart with:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span>helm install k8s<span style="color:#f92672">-</span>infra signoz<span style="color:#f92672">/</span>k8s<span style="color:#f92672">-</span>infra <span style="color:#f92672">-</span>n observability <span style="color:#f92672">--</span>create<span style="color:#f92672">-</span>namespace 
 </span></span><span style="display:flex;"><span><span style="color:#f92672">-</span>f <span style="color:#66d9ef">override</span><span style="color:#f92672">-</span>values.yaml
 </span></span></code></pre></div><div class="home-hero">
@@ -332,10 +332,9 @@ This is the main part, according to our use case, like here, we just have Kubern
   <div class="home-quote">
   </div> 
  </div>
-<p>And once we deploy the k8s, we are ready to send data in our signoz dashboard.</p>
-<p>Signoz part :<bR>
-Go to metrics and then create dashboard.<BR>
-Now we will create different metrics <BR></p>
+<p>After we install the helm chart, we are ready to send data to our signoz dashboard.</p>
+<h2 id="signoz-part-">Signoz part :<bR></h2>
+<p>Go to metrics and then create dashboard.<BR></p>
 <p><strong>So we create metrics for :</strong></p>
 <pre tabindex="0"><code>A)State of each pod ( pending , running)
 B)CPU utilization pod wise 

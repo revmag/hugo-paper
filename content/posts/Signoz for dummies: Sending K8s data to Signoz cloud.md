@@ -8,18 +8,19 @@ Over the last few days, I’ve been diving into Kubernetes, OpenTelemetry, obser
 In this post, we’ll walk through how to use SigNoz to collect Kubernetes data, send it to the SigNoz Cloud, and set up an alert that triggers whenever a pod gets stuck in a Pending state.
 <Br>
 So lets get started :<Br>
-Firstly, 
-What is Kubernetes, what is this thing we are doing here, where does Signoz come into the picture, can we do it without Signoz.
+Firstly, <br>
+What is Kubernetes, What is this thing we are doing here, Where does Signoz come into the picture, Can we do it without Signoz.
 Will answer all of them.
 
 Kubernetes?
 > Kubernetes — cluster orchestration for containers, with this you can manage and track a lot of containers across different clusters.
+<br>
 Where it's useful?<br>
 — Not for everyday use cases and that's why a lot of people don't know about it, but in cases where the resources get huge and you have to manage a lot of cluster, like for large applications.
 > 
 
-And what does signoz exactly do?
-> It is a full stack thing ( in more formal terms, full stack open source APM ) to monitor how the kubernetes cluster is. Like the state of each pod, container, total memory used, cpu utilisation of each container. It uses the famous OpenTelemetry to collect metrics from your K8s cluster.
+And what does Signoz exactly do?
+> It is a full stack application ( in more formal terms, full stack open source APM ) to monitor how the kubernetes cluster is. Like the state of each pod, container, total memory used, cpu utilisation of each container. It uses the famous OpenTelemetry to collect metrics from your K8s cluster.
 > 
 
 Wait, what’s OpenTelemetry?
@@ -63,11 +64,11 @@ Helm presets like *kubeletMetrics*, *logsCollection*, and *clusterMetrics* m
 
 # So let’s get started
 
-We will simulate a small kubernetes cluster on our pc using kind.
+We will simulate a small kubernetes cluster on our local machine using kind and set up SigNoz monitoring.
 
 Firstly install kind :
 
-> Kind : Kubernetes in docker, tool that lets us run a full Kubernetes cluster inside Docker containers.
+> Kind : Kubernetes in docker, tool that lets us run a full Kubernetes cluster inside Docker containers. <br>
 Gist : mini Kubernetes playground
 > 
 
@@ -88,7 +89,7 @@ kind create cluster --name signoz-shivam
  </div>
 
 
-And once we do this, it creates a bunch of pods, these pods are ecs( for key value pair), deployment etc.
+And once we do this,it spins up control-plane(master) and worker nodes inside Docker. It creates a bunch of Kubernetes system pods (e.g., etcd for key–value storage, coreDNS for DNS resolution, kube-apiserver, controller-manager, scheduler). <br>
 These are essential for the master mode to work properly and manage the worker nodes.<Br>
 And we can also run a few pods of our own. 
 
@@ -102,7 +103,7 @@ kubectl apply -f podname.yaml
 
 
 > What is Kubectl <br>
-→Kubernetes CLI, which facilitates running commands against your Kubernetes cluster.
+Kubernetes CLI, which facilitates running commands against your Kubernetes cluster.
 > 
 
 And then we get list of all pods here, by running:
@@ -117,7 +118,7 @@ Kubectl get pods -A
   </div> 
  </div>
 
-Then,
+Then, Install Helm
 
 ```solidity
 Brew install helm
@@ -137,18 +138,18 @@ Now, as we are using Signoz cloud, for the generic case ( just simple K8s pods),
 ```
 There are 3 main Collection agents ( yeah, which facilitate sending data from 
 cluster to Signoz cloud)
-1)K8s-Infra ( using Helm chart)
-2)OpenTelemetry Operator
-3)K8s serverless(EKS fargate)
+1)K8s-Infra ( Helm chart) -> Quickest setup
+2)OpenTelemetry Operator -> flexible, but requires more work
+3)K8s serverless(EKS fargate) -> for AWS serverless clusters.
 ```
 
-Overview: <br>
-So here, K8s-Infra deploys, otelAgent( pod level), and otelDeployment(cluster level), in one shot.
+Focus: <br>
+K8s-Infra -> deploys otelAgent( pod level), and otelDeployment(cluster level), in one shot.
 
 OtelAgent : deployed as Daemonset, i.e. runs on every node of cluster, to collect node and pod level data, like CPU, memory usage, state of each pod.<Br>
 OtelDeployment : to gather cluster metrics.
 
-Crazy visualtion of how it works :
+Crazy visualization of how it works :
 
 <div class="home-hero">
   <img src="/images/image-2.png">
@@ -162,20 +163,14 @@ Crazy visualtion of how it works :
   </div> 
  </div>
 
-After this, collector is installed and will automatically send telemetry data from your cluster and send them to SigNoz.
-
-We will use k8s infra for sending the data of the kubernetes, there are 2 options - either this or opentelemetry collector and Installer.
-
-K8s-infra installs telemetry operator and collector.
-
 > Brief about K8s-Infra :
 Collects data from cluster and sends to Signoz, acts as gateway to send any incoming OTLP telemetry data to SigNoz OtelCollector.
 K8s-Infra are not different from OpenTelemetry operator part, it just abstracts the part of deploying 2 OpenTelemetry collectors.
 > 
 
 ```
-Observability → logs, metrics and traces.
-Metrics. —  numeric measurements of system state over time (e.g., 
+K8s-Infra enables full observability by collecting:
+Metrics —  numeric measurements of system state over time (e.g., 
 CPU, memory, request latency)
 Logs -  detailed event records of what happened inside a system (e.g.,
  errors, print/debug messages)
@@ -183,15 +178,13 @@ Traces — end-to-end path of a request across services, showing
 latency and bottlenecks
  
 ```
+## Configuring K8s-Infra
 
-The commands are this — you have to configure a yaml file here, so we are basically installing from the helm repo of signoz, and it has some default values, and while downloading we download that.
 
-So we override those values, by upgrading it with some pre configured metrics which we want to send. The metrics here are details about the kubernetes clusters and pods, which bh default are not enabled.
+When installing from the SigNoz Helm repo, you can override default values to specify what telemetry to collect. And we are using 
+yaml file override-values.yaml here.
 
-Install the release by overriding some of the default values of OtelCollector ( here we want Kubernetes cluster data, which we have to enable)
-
-So, we have this file override-values.yaml :
-This is the main part, according to our use case, like here, we just have Kubernetes pods, if we have some applications of some language, we have to set the override-values.yaml file as required.
+So we override those values, by upgrading it with some pre configured metrics which we want to send. The metrics here are details about the kubernetes clusters and pods, which by default are not enabled( here we want Kubernetes cluster data, which we have to enable).
 
 override-values.yaml
 
@@ -226,7 +219,6 @@ presets:
       k8s.namespace.phase:     
         enabled: true
 
-  # Useful extras:
   kubernetesAttributes:
     enabled: true
   hostMetrics:
@@ -238,7 +230,7 @@ presets:
 
 ```
 
-1. Then install k8s-infra chart with above config :
+Once the config is ready, install the Helm chart with:
 
 ```solidity
 helm install k8s-infra signoz/k8s-infra -n observability --create-namespace 
@@ -251,11 +243,10 @@ helm install k8s-infra signoz/k8s-infra -n observability --create-namespace
   </div> 
  </div>
 
-And once we deploy the k8s, we are ready to send data in our signoz dashboard.
+After we install the helm chart, we are ready to send data to our signoz dashboard.
 
-Signoz part :<bR>
+## Signoz part :<bR>
 Go to metrics and then create dashboard.<BR>
-Now we will create different metrics <BR>
 
 <strong>So we create metrics for :</strong>
 ```
